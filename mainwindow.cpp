@@ -31,7 +31,10 @@ MainWindow::MainWindow(QWidget *parent)
     QStringList zone    = {"Lac", "Alee Principala", "Zona Caini",
                         "Scena", "Loc de joaca"};
 
-    if (ui->roleCombo)     { ui->roleCombo->clear();     ui->roleCombo->addItems({"Administrator","Angajat"}); }
+    if (ui->roleCombo) {
+        ui->roleCombo->clear();
+        ui->roleCombo->addItems({"Administrator", "Angajat"});
+    }
     if (ui->comboParcTask) { ui->comboParcTask->clear();  ui->comboParcTask->addItems(parcuri); }
     if (ui->comboZonaTask) { ui->comboZonaTask->clear();  ui->comboZonaTask->addItems(zone);   }
     if (ui->comboLocatie)  { ui->comboLocatie->clear();   ui->comboLocatie->addItems(parcuri);  }
@@ -58,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
     connectBtn("btnGoTasks",    [=](){ ui->stackedWidget->setCurrentIndex(4); incarcaAngajati(); });
     connectBtn("btnGoEvents",   [=](){ ui->stackedWidget->setCurrentIndex(5); });
     connectBtn("btnGoSesizari", [=](){ ui->stackedWidget->setCurrentIndex(6); incarcaSesizari(); });
-    connectBtn("btnGoIstoric",  [=](){ ui->stackedWidget->setCurrentIndex(7); });
+    connectBtn("btnGoIstoric",  [=](){ ui->stackedWidget->setCurrentIndex(7); incarcaIstoric(); });
     connectBtn("btnGoInventar", [=](){ ui->stackedWidget->setCurrentIndex(8); incarcaInventar(); });
 
     // Navigare pagina creare angajat - prin nume widget
@@ -169,7 +172,7 @@ void MainWindow::afiseazaEroare(const QString& mesaj) {
 void MainWindow::loginSistem() {
     QString user   = ui->userInput->text().trimmed();
     QString parola = ui->passInput->text().trimmed();
-    QString rol    = ui->roleCombo->currentText();
+    QString rolSelectat = ui->roleCombo ? ui->roleCombo->currentText() : "";
 
     if (user.isEmpty() || parola.isEmpty()) {
         afiseazaEroare("Completati username-ul si parola!");
@@ -184,27 +187,38 @@ void MainWindow::loginSistem() {
     QJsonObject raspuns = trimiteCerere(cerere);
 
     if (raspuns["succes"].toBool()) {
-        m_rolCurent    = raspuns["rol"].toString();
+        QString rolDB = raspuns["rol"].toString();
+
+        // Verifica ca rolul selectat coincide cu rolul din baza de date
+        bool rolCorect = (rolSelectat == "Administrator" && rolDB == "Admin") ||
+                         (rolSelectat == "Angajat"       && rolDB == "Angajat");
+
+        if (!rolCorect) {
+            // Credentiale corecte dar rol gresit selectat
+            // Facem logout imediat si afisam eroare
+            QJsonObject cerereLogout;
+            cerereLogout["actiune"] = "logout";
+            trimiteCerere(cerereLogout);
+
+            if (rolDB == "Admin")
+                afiseazaEroare("Acest cont este de Administrator.\nSelectati Administrator din lista.");
+            else
+                afiseazaEroare("Acest cont este de Angajat.\nSelectati Angajat din lista.");
+            return;
+        }
+
+        // Rol corect — procedem cu navigarea
+        m_rolCurent    = rolDB;
         m_idUserCurent = raspuns["id_user"].toInt();
+
         if (m_rolCurent == "Admin") {
             ui->stackedWidget->setCurrentIndex(1);
         } else if (m_rolCurent == "Angajat") {
             ui->stackedWidget->setCurrentIndex(2);
             incarcaTaskuriAngajat();
-        } else {
-            afiseazaEroare("Rol necunoscut: " + m_rolCurent);
         }
     } else {
-        QString eroare = raspuns["eroare"].toString();
-        if (eroare.contains("indisponibil") || eroare.contains("Timeout")) {
-            if (rol == "Administrator" && user == "admin") {
-                m_rolCurent = "Admin";
-                ui->stackedWidget->setCurrentIndex(1);
-                QMessageBox::information(this, "Mod Demo", "Server indisponibil. Datele nu se salveaza.");
-                return;
-            }
-        }
-        afiseazaEroare(eroare);
+        afiseazaEroare(raspuns["eroare"].toString());
     }
 }
 
@@ -539,6 +553,69 @@ void MainWindow::gestionareInventar(bool adauga) {
         } else {
             afiseazaEroare(raspuns["eroare"].toString());
         }
+    }
+}
+
+void MainWindow::incarcaIstoric() {
+    QJsonObject raspuns = trimiteCerere({{"actiune", "get_istoric_taskuri"}});
+    if (!raspuns["succes"].toBool()) return;
+
+    auto* tabel = this->findChild<QTableWidget*>("tableIstoric");
+    auto* combo = this->findChild<QComboBox*>("comboFiltruIstoric");
+    if (!tabel) return;
+
+    QJsonArray date = raspuns["date"].toArray();
+
+    // Populeaza combo cu angajatii unici (doar pentru Admin)
+    if (combo && m_rolCurent == "Admin") {
+        QString selectat = combo->currentText();
+        combo->blockSignals(true);
+        combo->clear();
+        combo->addItem("Toti angajatii");
+        QStringList angajatiUnici;
+        for (const QJsonValue& v : date) {
+            QString ang = v.toObject()["angajat"].toString();
+            if (!ang.isEmpty() && !angajatiUnici.contains(ang))
+                angajatiUnici.append(ang);
+        }
+        for (const QString& a : angajatiUnici)
+            combo->addItem(a);
+        // Reconecteaza filtrul
+        connect(combo, &QComboBox::currentTextChanged, this, [=]() {
+            incarcaIstoric();
+        });
+        combo->blockSignals(false);
+        // Restaureaza selectia daca exista
+        int idx = combo->findText(selectat);
+        if (idx >= 0) combo->setCurrentIndex(idx);
+    }
+
+    // Filtru activ
+    QString filtru = (combo && combo->currentIndex() > 0)
+                         ? combo->currentText() : "";
+
+    // Actualizeaza header coloana 3 in functie de rol
+    if (tabel->columnCount() > 3) {
+        tabel->setHorizontalHeaderItem(3,
+                                       new QTableWidgetItem(m_rolCurent == "Admin" ? "Angajat" : "Status"));
+    }
+
+    tabel->setRowCount(0);
+    for (const QJsonValue& v : date) {
+        QJsonObject t = v.toObject();
+        QString angajat = t["angajat"].toString();
+
+        // Aplica filtrul
+        if (!filtru.isEmpty() && angajat != filtru) continue;
+
+        int r = tabel->rowCount();
+        tabel->insertRow(r);
+        int cols = tabel->columnCount();
+        if (cols > 0) tabel->setItem(r, 0, new QTableWidgetItem(t["data"].toString()));
+        if (cols > 1) tabel->setItem(r, 1, new QTableWidgetItem(t["tip"].toString()));
+        if (cols > 2) tabel->setItem(r, 2, new QTableWidgetItem(t["descriere"].toString()));
+        if (cols > 3) tabel->setItem(r, 3, new QTableWidgetItem(
+                                     m_rolCurent == "Admin" ? angajat : t["status"].toString()));
     }
 }
 
