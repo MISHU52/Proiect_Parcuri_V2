@@ -83,7 +83,7 @@ QPushButton#btnLogoutAdmin, QPushButton#btnLogoutAngajat, QPushButton#btnBackGue
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>9</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -221,21 +221,6 @@ QPushButton#btnGoInventar:hover {
 }</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="spacing">
-         <number>20</number>
-        </property>
-        <property name="leftMargin">
-         <number>40</number>
-        </property>
-        <property name="topMargin">
-         <number>40</number>
-        </property>
-        <property name="rightMargin">
-         <number>40</number>
-        </property>
-        <property name="bottomMargin">
-         <number>40</number>
-        </property>
         <item>
          <widget class="QLabel" name="label_2">
           <property name="font">
@@ -293,6 +278,13 @@ QPushButton#btnGoInventar:hover {
          <widget class="QPushButton" name="btnGoInventar">
           <property name="text">
            <string>Gestiune Inventar 📦</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnGoCreareCont">
+          <property name="text">
+           <string>Inregistrare Angajat Nou</string>
           </property>
          </widget>
         </item>
@@ -1291,6 +1283,131 @@ QPushButton#btnUseInventar {
          <widget class="QPushButton" name="btnBackToDash_5">
           <property name="text">
            <string>Go Back</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageCreareAngajat">
+       <property name="styleSheet">
+        <string notr="true">/* Stil pentru fundalul paginii */
+QWidget#pageCreareAngajat {
+    background-color: #f5f7fa;
+}
+
+/* Stil pentru titlu */
+QLabel {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2d3436;
+    margin-bottom: 20px;
+}
+
+/* Stil pentru câmpurile de text (Input) */
+QLineEdit {
+    padding: 10px;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 250px;
+}
+
+QLineEdit:focus {
+    border: 2px solid #0984e3; /* Albastru când dai click în el */
+}
+
+/* Stil pentru butonul principal &quot;Creează Cont&quot; */
+QPushButton#btnSalveazaAngajat {
+    background-color: #00b894; /* Verde modern */
+    color: white;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 15px;
+    min-width: 150px;
+}
+
+QPushButton#btnSalveazaAngajat:hover {
+    background-color: #55efc4; /* Verde mai deschis la hover */
+}
+
+QPushButton#btnSalveazaAngajat:pressed {
+    background-color: #00a884;
+}
+
+/* Stil pentru butonul de Anulează */
+QPushButton#btnBackDinCreare {
+    background-color: red;
+    color: white;
+    border: 2px solid #b2bec3;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 13px;
+}
+
+QPushButton#btnBackDinCreare:hover {
+    background-color: #dfe6e9;
+    color: #2d3436;
+}</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_11">
+        <item>
+         <widget class="QLabel" name="qLabel">
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>-1</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Creare Angajat Nou</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit">
+          <property name="placeholderText">
+           <string>Nume Angajat</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_2">
+          <property name="placeholderText">
+           <string>Prenume Angajat</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="inputNumeAngajatNou">
+          <property name="placeholderText">
+           <string>Nume utilizator</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="inputParolaAngajatNou">
+          <property name="echoMode">
+           <enum>QLineEdit::EchoMode::Password</enum>
+          </property>
+          <property name="placeholderText">
+           <string>Parola...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnSalveazaAngajat">
+          <property name="text">
+           <string>Creeaza Cont</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnBackDinCreare">
+          <property name="text">
+           <string>Anuleaza</string>
           </property>
          </widget>
         </item>

@@ -21,46 +21,54 @@ public:
     ~MainWindow();
 
 private slots:
+    // Auth
     void loginSistem();
     void logoutSistem();
+
+    // Admin - Taskuri
     void adaugaTaskComplex();
     void convertSesizare();
+
+    // Admin - Evenimente & Inventar
     void gestioneazaEvenimente();
     void gestionareInventar(bool adauga);
+
+    // Admin - Angajati
+    void creeazaAngajat();
+    void reincarcaAngajati();
+
+    // Angajat & Guest
     void actiuniAngajat(int tip);
 
-    // Slot pentru datele primite de la server
+    // Socket
     void onDatePrimite();
     void onEroareConectare(QAbstractSocket::SocketError err);
 
 private:
     Ui::MainWindow *ui;
 
-    // --------------------------------------------------------
-    // Conexiune TCP la backend C++
-    // --------------------------------------------------------
     QTcpSocket* m_socket;
     QString     m_bufferRaspuns;
 
     static const QString SERVER_IP;
     static const int     SERVER_PORT = 9000;
 
-    // --------------------------------------------------------
-    // Starea sesiunii curente
-    // --------------------------------------------------------
     QString m_rolCurent;
     int     m_idUserCurent = -1;
 
-    // --------------------------------------------------------
-    // Metode helper
-    // --------------------------------------------------------
-    void        conecteazaLaServer();
+    // Retea
     QJsonObject trimiteCerere(const QJsonObject& cerere);
-    void        incarcaTaskuriAngajat();
-    void        incarcaSesizari();
-    void        incarcaAngajati();
-    void        incarcaInventar(int idZona = 1);
-    void        afiseazaEroare(const QString& mesaj);
+
+    // Incarcare date
+    void incarcaTaskuriAngajat();
+    void incarcaSesizari();
+    void incarcaAngajati();        // pentru QListWidget (selectie task)
+    void incarcaAngajatiTabel();   // pentru QTableWidget (gestionare angajati)
+    void incarcaInventar(int idZona = 1);
+
+    // Helpers
+    void conecteazaLaServer();
+    void afiseazaEroare(const QString& mesaj);
 };
 
 #endif // MAINWINDOW_H
