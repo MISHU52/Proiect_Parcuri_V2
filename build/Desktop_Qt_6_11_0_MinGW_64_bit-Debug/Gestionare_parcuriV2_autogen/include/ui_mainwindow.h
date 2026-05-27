@@ -24,6 +24,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
+#include <QtWidgets/QSplitter>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
@@ -57,7 +58,9 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QPushButton *btnGoSesizari;
     QPushButton *btnGoIstoric;
+    QHBoxLayout *hLayoutInventarRapoarte;
     QPushButton *btnGoInventar;
+    QPushButton *btnGoRapoarte;
     QPushButton *btnGoCreareCont;
     QPushButton *btnLogoutAdmin;
     QWidget *page_2;
@@ -102,6 +105,13 @@ public:
     QComboBox *comboZonaTask;
     QLineEdit *inputTaskAdmin;
     QListWidget *listAngajatiTask;
+    QVBoxLayout *vLayoutAsociere;
+    QHBoxLayout *hLayoutAsociereRow;
+    QLabel *labelItemTask;
+    QComboBox *comboItemInventar;
+    QLabel *labelCantTask;
+    QSpinBox *spinCantitateTask;
+    QPushButton *btnAsociaItem;
     QPushButton *btnAdaugaTaskManual;
     QPushButton *btnBackToDash;
     QWidget *page_5;
@@ -152,6 +162,19 @@ public:
     QLineEdit *inputParolaAngajatNou;
     QPushButton *btnSalveazaAngajat;
     QPushButton *btnBackDinCreare;
+    QWidget *pageRapoarte;
+    QVBoxLayout *vLayoutRapoarte;
+    QLabel *labelTitluRapoarte;
+    QSplitter *splitterRapoarte;
+    QWidget *widgetStanga;
+    QVBoxLayout *vLayoutStanga;
+    QLabel *labelAngajatiR;
+    QListWidget *listAngajatiRapoarte;
+    QWidget *widgetDreapta;
+    QVBoxLayout *vLayoutDreapta;
+    QLabel *labelRapoarteAngajat;
+    QTableWidget *tableRapoarte;
+    QPushButton *btnBackDinRapoarte;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -326,6 +349,16 @@ public:
 "QPushButton#btnGoInventar:hover {\n"
 "    background-color: #27ae60;\n"
 "    color: white;\n"
+"}\n"
+"\n"
+"QPushButton#btnGoRapoarte {\n"
+"    border: 2px solid #8e44ad;\n"
+"    color: #8e44ad;\n"
+"}\n"
+"\n"
+"QPushButton#btnGoRapoarte:hover {\n"
+"    background-color: #8e44ad;\n"
+"    color: white;\n"
 "}"));
         verticalLayout_3 = new QVBoxLayout(page_1);
         verticalLayout_3->setObjectName("verticalLayout_3");
@@ -370,10 +403,20 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_3);
 
+        hLayoutInventarRapoarte = new QHBoxLayout();
+        hLayoutInventarRapoarte->setObjectName("hLayoutInventarRapoarte");
         btnGoInventar = new QPushButton(page_1);
         btnGoInventar->setObjectName("btnGoInventar");
 
-        verticalLayout_3->addWidget(btnGoInventar);
+        hLayoutInventarRapoarte->addWidget(btnGoInventar);
+
+        btnGoRapoarte = new QPushButton(page_1);
+        btnGoRapoarte->setObjectName("btnGoRapoarte");
+
+        hLayoutInventarRapoarte->addWidget(btnGoRapoarte);
+
+
+        verticalLayout_3->addLayout(hLayoutInventarRapoarte);
 
         btnGoCreareCont = new QPushButton(page_1);
         btnGoCreareCont->setObjectName("btnGoCreareCont");
@@ -751,6 +794,46 @@ public:
         listAngajatiTask->setObjectName("listAngajatiTask");
 
         verticalLayout_10->addWidget(listAngajatiTask);
+
+        vLayoutAsociere = new QVBoxLayout();
+        vLayoutAsociere->setObjectName("vLayoutAsociere");
+        hLayoutAsociereRow = new QHBoxLayout();
+        hLayoutAsociereRow->setObjectName("hLayoutAsociereRow");
+        labelItemTask = new QLabel(page_4);
+        labelItemTask->setObjectName("labelItemTask");
+
+        hLayoutAsociereRow->addWidget(labelItemTask);
+
+        comboItemInventar = new QComboBox(page_4);
+        comboItemInventar->addItem(QString());
+        comboItemInventar->setObjectName("comboItemInventar");
+        comboItemInventar->setEnabled(true);
+
+        hLayoutAsociereRow->addWidget(comboItemInventar);
+
+        labelCantTask = new QLabel(page_4);
+        labelCantTask->setObjectName("labelCantTask");
+
+        hLayoutAsociereRow->addWidget(labelCantTask);
+
+        spinCantitateTask = new QSpinBox(page_4);
+        spinCantitateTask->setObjectName("spinCantitateTask");
+        spinCantitateTask->setMinimum(1);
+        spinCantitateTask->setMaximum(999);
+        spinCantitateTask->setValue(1);
+
+        hLayoutAsociereRow->addWidget(spinCantitateTask);
+
+
+        vLayoutAsociere->addLayout(hLayoutAsociereRow);
+
+        btnAsociaItem = new QPushButton(page_4);
+        btnAsociaItem->setObjectName("btnAsociaItem");
+
+        vLayoutAsociere->addWidget(btnAsociaItem);
+
+
+        verticalLayout_10->addLayout(vLayoutAsociere);
 
         btnAdaugaTaskManual = new QPushButton(page_4);
         btnAdaugaTaskManual->setObjectName("btnAdaugaTaskManual");
@@ -1219,6 +1302,109 @@ public:
         verticalLayout_11->addWidget(btnBackDinCreare);
 
         stackedWidget->addWidget(pageCreareAngajat);
+        pageRapoarte = new QWidget();
+        pageRapoarte->setObjectName("pageRapoarte");
+        pageRapoarte->setStyleSheet(QString::fromUtf8("\n"
+"QWidget#pageRapoarte {\n"
+"    background-color: #f5f7fa;\n"
+"}\n"
+"QListWidget#listAngajatiRapoarte {\n"
+"    border: 1px solid #dfe6e9;\n"
+"    border-radius: 8px;\n"
+"    background: white;\n"
+"    font-size: 13px;\n"
+"}\n"
+"QListWidget#listAngajatiRapoarte::item:selected {\n"
+"    background-color: #8e44ad;\n"
+"    color: white;\n"
+"    border-radius: 4px;\n"
+"}\n"
+"QTableWidget#tableRapoarte {\n"
+"    border: 1px solid #dfe6e9;\n"
+"    border-radius: 8px;\n"
+"    background: white;\n"
+"    gridline-color: #f1f2f6;\n"
+"}\n"
+"QPushButton#btnBackDinRapoarte {\n"
+"    background-color: #636e72;\n"
+"    color: white;\n"
+"    border-radius: 8px;\n"
+"    padding: 10px;\n"
+"    font-size: 13px;\n"
+"}\n"
+"QPushButton#btnBackDinRapoarte:hover {\n"
+"    background-color: #2d3436;\n"
+"}\n"
+"        "));
+        vLayoutRapoarte = new QVBoxLayout(pageRapoarte);
+        vLayoutRapoarte->setSpacing(12);
+        vLayoutRapoarte->setObjectName("vLayoutRapoarte");
+        vLayoutRapoarte->setContentsMargins(25, 20, 25, 20);
+        labelTitluRapoarte = new QLabel(pageRapoarte);
+        labelTitluRapoarte->setObjectName("labelTitluRapoarte");
+        labelTitluRapoarte->setFont(font6);
+
+        vLayoutRapoarte->addWidget(labelTitluRapoarte);
+
+        splitterRapoarte = new QSplitter(pageRapoarte);
+        splitterRapoarte->setObjectName("splitterRapoarte");
+        splitterRapoarte->setOrientation(Qt::Orientation::Horizontal);
+        widgetStanga = new QWidget(splitterRapoarte);
+        widgetStanga->setObjectName("widgetStanga");
+        vLayoutStanga = new QVBoxLayout(widgetStanga);
+        vLayoutStanga->setSpacing(8);
+        vLayoutStanga->setObjectName("vLayoutStanga");
+        vLayoutStanga->setContentsMargins(0, 0, 0, 0);
+        labelAngajatiR = new QLabel(widgetStanga);
+        labelAngajatiR->setObjectName("labelAngajatiR");
+        labelAngajatiR->setFont(font7);
+
+        vLayoutStanga->addWidget(labelAngajatiR);
+
+        listAngajatiRapoarte = new QListWidget(widgetStanga);
+        listAngajatiRapoarte->setObjectName("listAngajatiRapoarte");
+
+        vLayoutStanga->addWidget(listAngajatiRapoarte);
+
+        splitterRapoarte->addWidget(widgetStanga);
+        widgetDreapta = new QWidget(splitterRapoarte);
+        widgetDreapta->setObjectName("widgetDreapta");
+        vLayoutDreapta = new QVBoxLayout(widgetDreapta);
+        vLayoutDreapta->setSpacing(8);
+        vLayoutDreapta->setObjectName("vLayoutDreapta");
+        vLayoutDreapta->setContentsMargins(0, 0, 0, 0);
+        labelRapoarteAngajat = new QLabel(widgetDreapta);
+        labelRapoarteAngajat->setObjectName("labelRapoarteAngajat");
+        labelRapoarteAngajat->setFont(font7);
+
+        vLayoutDreapta->addWidget(labelRapoarteAngajat);
+
+        tableRapoarte = new QTableWidget(widgetDreapta);
+        if (tableRapoarte->columnCount() < 4)
+            tableRapoarte->setColumnCount(4);
+        QTableWidgetItem *__qtablewidgetitem25 = new QTableWidgetItem();
+        tableRapoarte->setHorizontalHeaderItem(0, __qtablewidgetitem25);
+        QTableWidgetItem *__qtablewidgetitem26 = new QTableWidgetItem();
+        tableRapoarte->setHorizontalHeaderItem(1, __qtablewidgetitem26);
+        QTableWidgetItem *__qtablewidgetitem27 = new QTableWidgetItem();
+        tableRapoarte->setHorizontalHeaderItem(2, __qtablewidgetitem27);
+        QTableWidgetItem *__qtablewidgetitem28 = new QTableWidgetItem();
+        tableRapoarte->setHorizontalHeaderItem(3, __qtablewidgetitem28);
+        tableRapoarte->setObjectName("tableRapoarte");
+        tableRapoarte->horizontalHeader()->setStretchLastSection(true);
+
+        vLayoutDreapta->addWidget(tableRapoarte);
+
+        splitterRapoarte->addWidget(widgetDreapta);
+
+        vLayoutRapoarte->addWidget(splitterRapoarte);
+
+        btnBackDinRapoarte = new QPushButton(pageRapoarte);
+        btnBackDinRapoarte->setObjectName("btnBackDinRapoarte");
+
+        vLayoutRapoarte->addWidget(btnBackDinRapoarte);
+
+        stackedWidget->addWidget(pageRapoarte);
 
         verticalLayout->addWidget(stackedWidget);
 
@@ -1233,7 +1419,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(9);
+        stackedWidget->setCurrentIndex(0);
         tabWidget->setCurrentIndex(1);
 
 
@@ -1259,7 +1445,8 @@ public:
         btnGoSesizari->setText(QCoreApplication::translate("MainWindow", "Sesiz\304\203ri Primite \342\232\240\357\270\217", nullptr));
         btnGoIstoric->setText(QCoreApplication::translate("MainWindow", "Istoric Activitate \360\237\223\234", nullptr));
         btnGoInventar->setText(QCoreApplication::translate("MainWindow", "Gestiune Inventar \360\237\223\246", nullptr));
-        btnGoCreareCont->setText(QCoreApplication::translate("MainWindow", "Inregistrare Angajat Nou", nullptr));
+        btnGoRapoarte->setText(QCoreApplication::translate("MainWindow", "Rapoarte Angajati \360\237\223\213", nullptr));
+        btnGoCreareCont->setText(QCoreApplication::translate("MainWindow", "Inregistrare Angajat Nou\360\237\221\267", nullptr));
         btnLogoutAdmin->setText(QCoreApplication::translate("MainWindow", "LogOut", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "SARCINI ALOCATE ECHIPEI", nullptr));
         QTableWidgetItem *___qtablewidgetitem = tableTaskuriAngajat->horizontalHeaderItem(0);
@@ -1301,6 +1488,11 @@ public:
         QTableWidgetItem *___qtablewidgetitem8 = tableTaskuriAdmin->horizontalHeaderItem(3);
         ___qtablewidgetitem8->setText(QCoreApplication::translate("MainWindow", "Status", nullptr));
         inputTaskAdmin->setPlaceholderText(QCoreApplication::translate("MainWindow", "Descriere task nou...", nullptr));
+        labelItemTask->setText(QCoreApplication::translate("MainWindow", "Item inventar:", nullptr));
+        comboItemInventar->setItemText(0, QCoreApplication::translate("MainWindow", "(Selecteaza item...)", nullptr));
+
+        labelCantTask->setText(QCoreApplication::translate("MainWindow", "Cant:", nullptr));
+        btnAsociaItem->setText(QCoreApplication::translate("MainWindow", "Asociaza Item \360\237\224\227", nullptr));
         btnAdaugaTaskManual->setText(QCoreApplication::translate("MainWindow", "Adaug\304\203 Task\342\234\205", nullptr));
         btnBackToDash->setText(QCoreApplication::translate("MainWindow", "Go Back", nullptr));
         labelTitluEvenimente->setText(QCoreApplication::translate("MainWindow", "\342\255\220 ORGANIZARE EVENIMENTE ", nullptr));
@@ -1358,6 +1550,18 @@ public:
         inputParolaAngajatNou->setPlaceholderText(QCoreApplication::translate("MainWindow", "Parola...", nullptr));
         btnSalveazaAngajat->setText(QCoreApplication::translate("MainWindow", "Creeaza Cont", nullptr));
         btnBackDinCreare->setText(QCoreApplication::translate("MainWindow", "Anuleaza", nullptr));
+        labelTitluRapoarte->setText(QCoreApplication::translate("MainWindow", "RAPOARTE ANGAJATI", nullptr));
+        labelAngajatiR->setText(QCoreApplication::translate("MainWindow", "Angajati", nullptr));
+        labelRapoarteAngajat->setText(QCoreApplication::translate("MainWindow", "Selectati un angajat din stanga", nullptr));
+        QTableWidgetItem *___qtablewidgetitem25 = tableRapoarte->horizontalHeaderItem(0);
+        ___qtablewidgetitem25->setText(QCoreApplication::translate("MainWindow", "Task", nullptr));
+        QTableWidgetItem *___qtablewidgetitem26 = tableRapoarte->horizontalHeaderItem(1);
+        ___qtablewidgetitem26->setText(QCoreApplication::translate("MainWindow", "Data", nullptr));
+        QTableWidgetItem *___qtablewidgetitem27 = tableRapoarte->horizontalHeaderItem(2);
+        ___qtablewidgetitem27->setText(QCoreApplication::translate("MainWindow", "Tip", nullptr));
+        QTableWidgetItem *___qtablewidgetitem28 = tableRapoarte->horizontalHeaderItem(3);
+        ___qtablewidgetitem28->setText(QCoreApplication::translate("MainWindow", "Descriere", nullptr));
+        btnBackDinRapoarte->setText(QCoreApplication::translate("MainWindow", "Go Back", nullptr));
     } // retranslateUi
 
 };

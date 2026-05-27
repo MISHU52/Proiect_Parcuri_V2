@@ -65,7 +65,10 @@ private:
     void incarcaAngajati();        // pentru QListWidget (selectie task)
     void incarcaAngajatiTabel();   // pentru QTableWidget (gestionare angajati)
     void incarcaInventar(int idZona = 1);
+    void incarcaItemsInventar();
     void incarcaIstoric();
+    void incarcaAngajatiRapoarte();
+    void incarcaRapoarteAngajat(int idAngajat);
 
     // Helpers
     void conecteazaLaServer();

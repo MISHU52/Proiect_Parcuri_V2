@@ -419,6 +419,6 @@ C:/Qt_work/Gestionare_parcuriV2/mainwindow.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
  mdp:C:/Qt_work/Gestionare_parcuriV2/build/Desktop_Qt_6_11_0_MinGW_64_bit-Debug/Gestionare_parcuriV2_autogen/moc_predefs.h
  mdp:C:/Qt_work/Gestionare_parcuriV2/mainwindow.h
-C:/Qt_work/Gestionare_parcuriV2/main.cpp
 C:/Qt_work/Gestionare_parcuriV2/mainwindow.cpp
  uic:ui_mainwindow.h
+C:/Qt_work/Gestionare_parcuriV2/main.cpp

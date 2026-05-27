@@ -7,12 +7,17 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QLineEdit>
-#include <QDebug>
-#include <QDebug>
 #include <QComboBox>
+#include <QSpinBox>
 
+// ============================================================
+// Schimba cu IP-ul calculatorului care ruleaza serverul C++
+// ============================================================
 const QString MainWindow::SERVER_IP = "172.20.10.3";
 
+// ============================================================
+// CONSTRUCTOR
+// ============================================================
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -23,18 +28,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(m_socket, &QAbstractSocket::errorOccurred,
             this, &MainWindow::onEroareConectare);
-
     m_socket->connectToHost(SERVER_IP, SERVER_PORT);
 
+    // Populare combouri statice
     QStringList parcuri = {"Herastrau", "Cismigiu", "Sebastian",
                            "Carol", "Tineret", "Drumul Taberei"};
     QStringList zone    = {"Lac", "Alee Principala", "Zona Caini",
                         "Scena", "Loc de joaca"};
 
-    if (ui->roleCombo) {
-        ui->roleCombo->clear();
-        ui->roleCombo->addItems({"Administrator", "Angajat"});
-    }
+    if (ui->roleCombo)     { ui->roleCombo->clear();     ui->roleCombo->addItems({"Administrator","Angajat"}); }
     if (ui->comboParcTask) { ui->comboParcTask->clear();  ui->comboParcTask->addItems(parcuri); }
     if (ui->comboZonaTask) { ui->comboZonaTask->clear();  ui->comboZonaTask->addItems(zone);   }
     if (ui->comboLocatie)  { ui->comboLocatie->clear();   ui->comboLocatie->addItems(parcuri);  }
@@ -47,44 +49,102 @@ MainWindow::MainWindow(QWidget *parent)
         t->setEditTriggers(QAbstractItemView::NoEditTriggers);
     }
 
+    //conectare butoane
     auto connectBtn = [&](const QString& name, auto slot) {
         if (auto* btn = this->findChild<QPushButton*>(name))
             connect(btn, &QPushButton::clicked, this, slot);
     };
 
-    connectBtn("btnLogin",            &MainWindow::loginSistem);
-    connectBtn("btnLogoutAdmin",      &MainWindow::logoutSistem);
-    connectBtn("btnLogoutAngajat",    &MainWindow::logoutSistem);
-    connectBtn("btnLogoutGuest",      &MainWindow::logoutSistem);
-    connectBtn("btnJoinGuest",        [=](){ ui->stackedWidget->setCurrentIndex(3); });
+    //Autentificare
+    connectBtn("btnLogin",         &MainWindow::loginSistem);
+    connectBtn("btnLogoutAdmin",   &MainWindow::logoutSistem);
+    connectBtn("btnLogoutAngajat", &MainWindow::logoutSistem);
+    connectBtn("btnLogoutGuest",   &MainWindow::logoutSistem);
+    connectBtn("btnJoinGuest",     [=](){ ui->stackedWidget->setCurrentIndex(3); });
 
-    connectBtn("btnGoTasks",    [=](){ ui->stackedWidget->setCurrentIndex(4); incarcaAngajati(); });
+    //Pagina admin
+    connectBtn("btnGoTasks",    [=](){ ui->stackedWidget->setCurrentIndex(4); incarcaAngajati(); incarcaItemsInventar(); });
     connectBtn("btnGoEvents",   [=](){ ui->stackedWidget->setCurrentIndex(5); });
     connectBtn("btnGoSesizari", [=](){ ui->stackedWidget->setCurrentIndex(6); incarcaSesizari(); });
     connectBtn("btnGoIstoric",  [=](){ ui->stackedWidget->setCurrentIndex(7); incarcaIstoric(); });
     connectBtn("btnGoInventar", [=](){ ui->stackedWidget->setCurrentIndex(8); incarcaInventar(); });
-
-    // Navigare pagina creare angajat - prin nume widget
-    connectBtn("btnGoAngajati",   [=](){
+    connectBtn("btnGoCreareCont",[=](){
         if (auto* p = ui->stackedWidget->findChild<QWidget*>("pageCreareAngajat"))
             ui->stackedWidget->setCurrentWidget(p);
     });
-    connectBtn("btnGoCreareCont", [=](){
-        if (auto* p = ui->stackedWidget->findChild<QWidget*>("pageCreareAngajat"))
+    connectBtn("btnGoRapoarte", [=](){
+        if (auto* p = ui->stackedWidget->findChild<QWidget*>("pageRapoarte"))
             ui->stackedWidget->setCurrentWidget(p);
+        incarcaAngajatiRapoarte();
     });
 
-    connectBtn("btnBackToDash",         [=](){ ui->stackedWidget->setCurrentIndex(1); });
-    connectBtn("btnBackToDash_2",       [=](){ ui->stackedWidget->setCurrentIndex(1); });
-    connectBtn("btnBackToDash_3",       [=](){ ui->stackedWidget->setCurrentIndex(1); });
-    connectBtn("btnBackToDash_4",       [=](){ ui->stackedWidget->setCurrentIndex(1); });
-    connectBtn("btnBackToDash_5",       [=](){ ui->stackedWidget->setCurrentIndex(1); });
-    connectBtn("btnBackToDashAngajati", [=](){ ui->stackedWidget->setCurrentIndex(1); });
-    connectBtn("btnBackDinCreare",      [=](){ ui->stackedWidget->setCurrentIndex(1); });
+    //Buton "Go Back"
+    connectBtn("btnBackToDash",   [=](){ ui->stackedWidget->setCurrentIndex(1); });
+    connectBtn("btnBackToDash_2", [=](){ ui->stackedWidget->setCurrentIndex(1); });
+    connectBtn("btnBackToDash_3", [=](){ ui->stackedWidget->setCurrentIndex(1); });
+    connectBtn("btnBackToDash_4", [=](){ ui->stackedWidget->setCurrentIndex(1); });
+    connectBtn("btnBackToDash_5", [=](){ ui->stackedWidget->setCurrentIndex(1); });
+    connectBtn("btnBackDinCreare",    [=](){ ui->stackedWidget->setCurrentIndex(1); });
+    connectBtn("btnBackDinRapoarte",  [=](){ ui->stackedWidget->setCurrentIndex(1); });
 
+    //Admin-taskuri
     connectBtn("btnAdaugaTaskManual", &MainWindow::adaugaTaskComplex);
     connectBtn("btnConvertTask",      &MainWindow::convertSesizare);
 
+    // Asociere item inventar la task
+    connectBtn("btnAsociaItem", [=](){
+        auto* combo    = this->findChild<QComboBox*>("comboItemInventar");
+        auto* spinCant = this->findChild<QSpinBox*>("spinCantitateTask");
+        if (!combo || !spinCant) return;
+
+        if (combo->currentIndex() == 0) {
+            afiseazaEroare("Selectati un item din lista de inventar!");
+            return;
+        }
+
+        QString numeItem = combo->currentText().section(" (", 0, 0).trimmed();
+        int cantitate    = spinCant->value();
+
+        int idTask = 0;
+        int rowSel = ui->tableTaskuriAdmin->currentRow();
+        if (rowSel >= 0) {
+            auto* it = ui->tableTaskuriAdmin->item(rowSel, 0);
+            if (it) idTask = it->text().toInt();
+        }
+        if (idTask <= 0 && ui->tableTaskuriAdmin->rowCount() > 0) {
+            auto* it = ui->tableTaskuriAdmin->item(
+                ui->tableTaskuriAdmin->rowCount() - 1, 0);
+            if (it) idTask = it->text().toInt();
+        }
+        if (idTask <= 0) {
+            afiseazaEroare("Creati mai intai un task, apoi asociati item-ul");
+            return;
+        }
+
+        QJsonObject cerere;
+        cerere["actiune"]   = "asociaza_item_task";
+        cerere["nume_item"] = numeItem;
+        cerere["cantitate"] = cantitate;
+        cerere["id_task"]   = idTask;
+
+        QJsonObject raspuns = trimiteCerere(cerere);
+
+        if (raspuns["succes"].toBool()) {
+            combo->setCurrentIndex(0);
+            spinCant->setValue(1);
+            incarcaItemsInventar();
+            incarcaInventar();
+            QMessageBox::information(this, "Succes",
+                                     QString("Item '%1' x%2 asociat la task #%3!\nInventarul a fost actualizat.")
+                                         .arg(numeItem).arg(cantitate).arg(idTask));
+        } else {
+            afiseazaEroare(raspuns["eroare"].toString());
+        }
+    });
+
+
+
+    //Admin-sesizari
     connectBtn("btnIgnoraSesizarea", [=](){
         int row = ui->tableSesizariAdmin->currentRow();
         if (row == -1) { afiseazaEroare("Selectati o sesizare!"); return; }
@@ -102,14 +162,23 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
+    //Admin-evenimente si inventar
     connectBtn("btnAprobaEveniment", &MainWindow::gestioneazaEvenimente);
     connectBtn("btnAddInventar",     [=](){ gestionareInventar(true);  });
     connectBtn("btnUseInventar",     [=](){ gestionareInventar(false); });
 
-    connectBtn("btnCreeazaAngajat",    &MainWindow::creeazaAngajat);
-    connectBtn("btnReincarcaAngajati", &MainWindow::reincarcaAngajati);
-    connectBtn("btnSalveazaAngajat",   &MainWindow::creeazaAngajat);
+    //Admin-angajati
+    connectBtn("btnSalveazaAngajat", &MainWindow::creeazaAngajat);
 
+    // Click pe angajat din lista rapoarte -> incarca rapoartele lui
+    if (auto* listaR = this->findChild<QListWidget*>("listAngajatiRapoarte")) {
+        connect(listaR, &QListWidget::currentRowChanged, this, [=](int) {
+            if (auto* item = listaR->currentItem())
+                incarcaRapoarteAngajat(item->data(Qt::UserRole).toInt());
+        });
+    }
+
+    // ANGAJAT
     connectBtn("btnStartTask",             [=](){ actiuniAngajat(1); });
     connectBtn("btnFinishTask",            [=](){ actiuniAngajat(2); });
     connectBtn("btnSendReport",            [=](){ actiuniAngajat(3); });
@@ -117,29 +186,29 @@ MainWindow::MainWindow(QWidget *parent)
     connectBtn("btnTrimiteSesizareaGuest", [=](){ actiuniAngajat(5); });
 }
 
+// DESTRUCTOR
 MainWindow::~MainWindow() {
     if (m_socket->state() == QAbstractSocket::ConnectedState) {
         QJsonObject cerere;
         cerere["actiune"] = "logout";
-        // toUtf8() garanteaza ca diacriticele sunt trimise corect
-        QByteArray dateJson = QJsonDocument(cerere).toJson(QJsonDocument::Compact);
-        m_socket->write(dateJson + "\n");
+        m_socket->write(QJsonDocument(cerere).toJson(QJsonDocument::Compact) + "\n");
         m_socket->waitForBytesWritten(500);
         m_socket->disconnectFromHost();
     }
     delete ui;
 }
 
+// RETEA
 QJsonObject MainWindow::trimiteCerere(const QJsonObject& cerere) {
     if (m_socket->state() != QAbstractSocket::ConnectedState) {
         m_socket->connectToHost(SERVER_IP, SERVER_PORT);
         if (!m_socket->waitForConnected(3000))
-            return {{"succes", false}, {"eroare", QString("Server indisponibil (%1:%2)").arg(SERVER_IP).arg(SERVER_PORT)}};
+            return {{"succes", false},
+                    {"eroare", QString("Server indisponibil (%1:%2)")
+                                   .arg(SERVER_IP).arg(SERVER_PORT)}};
     }
 
-    // toUtf8() garanteaza ca diacriticele sunt trimise corect
-    QByteArray dateJson = QJsonDocument(cerere).toJson(QJsonDocument::Compact);
-    m_socket->write(dateJson + "\n");
+    m_socket->write(QJsonDocument(cerere).toJson(QJsonDocument::Compact) + "\n");
     if (!m_socket->waitForBytesWritten(3000))
         return {{"succes", false}, {"eroare", "Eroare la trimiterea cererii"}};
 
@@ -150,16 +219,14 @@ QJsonObject MainWindow::trimiteCerere(const QJsonObject& cerere) {
         bufferRaw += m_socket->readAll();
     }
 
-    // Extrage prima linie si forteaza interpretarea ca UTF-8
     QByteArray linie = bufferRaw.left(bufferRaw.indexOf('\n')).trimmed();
-    QString asUtf8  = QString::fromUtf8(linie);
-
     QJsonParseError parseErr;
-    QJsonDocument doc = QJsonDocument::fromJson(asUtf8.toUtf8(), &parseErr);
+    QJsonDocument doc = QJsonDocument::fromJson(
+        QString::fromUtf8(linie).toUtf8(), &parseErr);
 
     if (doc.isNull())
-        return {{"succes", false}, {"eroare", "Raspuns invalid: " + parseErr.errorString()}};
-
+        return {{"succes", false},
+                {"eroare", "Raspuns invalid: " + parseErr.errorString()}};
     return doc.object();
 }
 
@@ -169,9 +236,10 @@ void MainWindow::afiseazaEroare(const QString& mesaj) {
     QMessageBox::warning(this, "Eroare", mesaj);
 }
 
+// AUTH
 void MainWindow::loginSistem() {
-    QString user   = ui->userInput->text().trimmed();
-    QString parola = ui->passInput->text().trimmed();
+    QString user        = ui->userInput->text().trimmed();
+    QString parola      = ui->passInput->text().trimmed();
     QString rolSelectat = ui->roleCombo ? ui->roleCombo->currentText() : "";
 
     if (user.isEmpty() || parola.isEmpty()) {
@@ -189,25 +257,17 @@ void MainWindow::loginSistem() {
     if (raspuns["succes"].toBool()) {
         QString rolDB = raspuns["rol"].toString();
 
-        // Verifica ca rolul selectat coincide cu rolul din baza de date
         bool rolCorect = (rolSelectat == "Administrator" && rolDB == "Admin") ||
                          (rolSelectat == "Angajat"       && rolDB == "Angajat");
 
         if (!rolCorect) {
-            // Credentiale corecte dar rol gresit selectat
-            // Facem logout imediat si afisam eroare
-            QJsonObject cerereLogout;
-            cerereLogout["actiune"] = "logout";
-            trimiteCerere(cerereLogout);
-
-            if (rolDB == "Admin")
-                afiseazaEroare("Acest cont este de Administrator.\nSelectati Administrator din lista.");
-            else
-                afiseazaEroare("Acest cont este de Angajat.\nSelectati Angajat din lista.");
+            trimiteCerere({{"actiune", "logout"}});
+            afiseazaEroare(rolDB == "Admin"
+                               ? "Acest cont este de Administrator.\nSelectati 'Administrator' din lista."
+                               : "Acest cont este de Angajat.\nSelectati 'Angajat' din lista.");
             return;
         }
 
-        // Rol corect — procedem cu navigarea
         m_rolCurent    = rolDB;
         m_idUserCurent = raspuns["id_user"].toInt();
 
@@ -223,11 +283,8 @@ void MainWindow::loginSistem() {
 }
 
 void MainWindow::logoutSistem() {
-    if (m_socket->state() == QAbstractSocket::ConnectedState) {
-        QJsonObject cerere;
-        cerere["actiune"] = "logout";
-        trimiteCerere(cerere);
-    }
+    if (m_socket->state() == QAbstractSocket::ConnectedState)
+        trimiteCerere({{"actiune", "logout"}});
     m_rolCurent    = "";
     m_idUserCurent = -1;
     ui->userInput->clear();
@@ -235,44 +292,34 @@ void MainWindow::logoutSistem() {
     ui->stackedWidget->setCurrentIndex(0);
 }
 
+// INCARCARE DATE
 void MainWindow::incarcaTaskuriAngajat() {
     if (m_idUserCurent <= 0) return;
     QJsonObject raspuns = trimiteCerere({{"actiune", "get_taskuri_mele"}});
     if (!raspuns["succes"].toBool()) return;
 
-    // DEBUG TEMPORAR - afiseaza JSON-ul primit
-    qDebug() << "JSON taskuri primit:" << QJsonDocument(raspuns).toJson();
-
-    // DEBUG: afiseaza JSON-ul primit de la server
-    qDebug() << "JSON taskuri primit:" << QJsonDocument(raspuns).toJson();
-
     ui->tableTaskuriAngajat->setRowCount(0);
     for (const QJsonValue& v : raspuns["date"].toArray()) {
         QJsonObject t = v.toObject();
-        int id     = t["id"].toInt();
-        QString tip      = t["tip"].toString();
-        QString descriere= t["descriere"].toString();
-        QString status   = t["status"].toString();
+        int     id    = t["id"].toInt();
+        QString tip   = t["tip"].toString();
+        QString desc  = t["descriere"].toString();
+        QString stat  = t["status"].toString();
 
-        int r = ui->tableTaskuriAngajat->rowCount();
-        ui->tableTaskuriAngajat->insertRow(r);
-
+        int r    = ui->tableTaskuriAngajat->rowCount();
         int cols = ui->tableTaskuriAngajat->columnCount();
-        // Scrie ID in coloana 0 intotdeauna
-        ui->tableTaskuriAngajat->setItem(r, 0,
-                                         new QTableWidgetItem(QString::number(id)));
-
+        ui->tableTaskuriAngajat->insertRow(r);
+        ui->tableTaskuriAngajat->setItem(r, 0, new QTableWidgetItem(QString::number(id)));
         if (cols >= 5) {
-            // Tabelul colegului: ID | Sarcina | Locatie | Resurse | Status
-            ui->tableTaskuriAngajat->setItem(r, 1, new QTableWidgetItem(descriere));
+            // Tabel cu 5 coloane: ID | Sarcina | Locatie | Resurse | Status
+            ui->tableTaskuriAngajat->setItem(r, 1, new QTableWidgetItem(desc));
             ui->tableTaskuriAngajat->setItem(r, 2, new QTableWidgetItem("Zona 1"));
             ui->tableTaskuriAngajat->setItem(r, 3, new QTableWidgetItem(tip));
-            ui->tableTaskuriAngajat->setItem(r, 4, new QTableWidgetItem(status));
+            ui->tableTaskuriAngajat->setItem(r, 4, new QTableWidgetItem(stat));
         } else {
-            // Fallback pentru alte structuri de tabel
             if (cols > 1) ui->tableTaskuriAngajat->setItem(r, 1, new QTableWidgetItem(tip));
-            if (cols > 2) ui->tableTaskuriAngajat->setItem(r, 2, new QTableWidgetItem(descriere));
-            if (cols > 3) ui->tableTaskuriAngajat->setItem(r, 3, new QTableWidgetItem(status));
+            if (cols > 2) ui->tableTaskuriAngajat->setItem(r, 2, new QTableWidgetItem(desc));
+            if (cols > 3) ui->tableTaskuriAngajat->setItem(r, 3, new QTableWidgetItem(stat));
         }
     }
 }
@@ -316,19 +363,14 @@ void MainWindow::incarcaAngajati() {
     }
 }
 
-// incarcaAngajatiTabel — foloseste findChild in loc de ui->tableAngajati
-// deoarece tabelul poate sa nu existe in UI-ul colegului
 void MainWindow::incarcaAngajatiTabel() {
     QJsonObject raspuns = trimiteCerere({{"actiune", "get_angajati"}});
     if (!raspuns["succes"].toBool()) {
         afiseazaEroare("Nu am putut incarca angajatii:\n" + raspuns["eroare"].toString());
         return;
     }
-
-    // Cauta tabelul dupa nume — compatibil cu orice UI
     auto* tabel = this->findChild<QTableWidget*>("tableAngajati");
-    if (!tabel) return; // tabelul nu exista in UI-ul colegului, ignoram
-
+    if (!tabel) return;
     tabel->setRowCount(0);
     for (const QJsonValue& v : raspuns["date"].toArray()) {
         QJsonObject a = v.toObject();
@@ -352,24 +394,92 @@ void MainWindow::incarcaInventar(int idZona) {
         ui->tableInventar->insertRow(r);
         ui->tableInventar->setItem(r, 0, new QTableWidgetItem(QString::number(o["id"].toInt())));
         ui->tableInventar->setItem(r, 1, new QTableWidgetItem(o["subtip"].toString()));
-        ui->tableInventar->setItem(r, 2, new QTableWidgetItem("1"));
+        ui->tableInventar->setItem(r, 2, new QTableWidgetItem(QString::number(o["cantitate"].toInt())));
         ui->tableInventar->setItem(r, 3, new QTableWidgetItem(o["stare"].toString()));
     }
 }
 
+void MainWindow::incarcaItemsInventar() {
+    auto* combo = this->findChild<QComboBox*>("comboItemInventar");
+    if (!combo) return;
+
+    QJsonObject raspuns = trimiteCerere({{"actiune", "get_inventar_depozit"}});
+    combo->clear();
+    combo->addItem("(Selecteaza item...)");
+
+    if (!raspuns["succes"].toBool()) return;
+
+    for (const QJsonValue& v : raspuns["date"].toArray()) {
+        QJsonObject o = v.toObject();
+        QString label = o["subtip"].toString() +
+                        " (stoc: " + QString::number(o["cantitate"].toInt()) + ")";
+        combo->addItem(label);
+    }
+}
+
+void MainWindow::incarcaIstoric() {
+    QJsonObject raspuns = trimiteCerere({{"actiune", "get_istoric_taskuri"}});
+    if (!raspuns["succes"].toBool()) return;
+
+    auto* tabel = this->findChild<QTableWidget*>("tableIstoric");
+    auto* combo = this->findChild<QComboBox*>("comboFiltruIstoric");
+    if (!tabel) return;
+
+    QJsonArray date = raspuns["date"].toArray();
+
+    if (combo && m_rolCurent == "Admin") {
+        QString selectat = combo->currentText();
+        combo->blockSignals(true);
+        combo->clear();
+        combo->addItem("Toti angajatii");
+        QStringList unici;
+        for (const QJsonValue& v : date) {
+            QString ang = v.toObject()["angajat"].toString();
+            if (!ang.isEmpty() && !unici.contains(ang))
+                unici.append(ang);
+        }
+        for (const QString& a : unici) combo->addItem(a);
+        connect(combo, &QComboBox::currentTextChanged,
+                this, [=](){ incarcaIstoric(); });
+        combo->blockSignals(false);
+        int idx = combo->findText(selectat);
+        if (idx >= 0) combo->setCurrentIndex(idx);
+    }
+
+    QString filtru = (combo && combo->currentIndex() > 0) ? combo->currentText() : "";
+
+    if (tabel->columnCount() > 3)
+        tabel->setHorizontalHeaderItem(3, new QTableWidgetItem(
+                                              m_rolCurent == "Admin" ? "Angajat" : "Status"));
+
+    tabel->setRowCount(0);
+    for (const QJsonValue& v : date) {
+        QJsonObject t = v.toObject();
+        QString angajat = t["angajat"].toString();
+        if (!filtru.isEmpty() && angajat != filtru) continue;
+
+        int r    = tabel->rowCount();
+        int cols = tabel->columnCount();
+        tabel->insertRow(r);
+        if (cols > 0) tabel->setItem(r, 0, new QTableWidgetItem(t["data"].toString()));
+        if (cols > 1) tabel->setItem(r, 1, new QTableWidgetItem(t["tip"].toString()));
+        if (cols > 2) tabel->setItem(r, 2, new QTableWidgetItem(t["descriere"].toString()));
+        if (cols > 3) tabel->setItem(r, 3, new QTableWidgetItem(
+                                     m_rolCurent == "Admin" ? angajat : t["status"].toString()));
+    }
+}
+
+//Creare angajat
 void MainWindow::creeazaAngajat() {
-    // Citeste campurile cu findChild — compatibil cu UI-ul colegului
     auto getField = [&](const QString& name) -> QString {
         if (auto* w = this->findChild<QLineEdit*>(name))
             return w->text().trimmed();
         return "";
     };
     auto clearField = [&](const QString& name) {
-        if (auto* w = this->findChild<QLineEdit*>(name))
-            w->clear();
+        if (auto* w = this->findChild<QLineEdit*>(name)) w->clear();
     };
 
-    // Numele exacte din Object Inspector-ul colegului
     QString username = getField("inputNumeAngajatNou");
     QString parola   = getField("inputParolaAngajatNou");
     QString nume     = getField("lineEdit");
@@ -403,9 +513,7 @@ void MainWindow::creeazaAngajat() {
         clearField("inputParolaAngajatNou");
         clearField("lineEdit");
         clearField("lineEdit_2");
-
         ui->stackedWidget->setCurrentIndex(1);
-
         QMessageBox::information(this, "Cont creat",
                                  QString("Angajatul %1 %2 a fost inregistrat!\nUsername: %3\nEmail: %4")
                                      .arg(prenume, nume, username, email));
@@ -416,9 +524,9 @@ void MainWindow::creeazaAngajat() {
 
 void MainWindow::reincarcaAngajati() {
     incarcaAngajatiTabel();
-    QMessageBox::information(this, "OK", "Lista a fost reincarcata.");
 }
 
+// ADMIN - TASKURI
 void MainWindow::adaugaTaskComplex() {
     QString desc = ui->inputTaskAdmin->text().trimmed();
     if (desc.isEmpty()) { afiseazaEroare("Completati descrierea taskului!"); return; }
@@ -455,7 +563,9 @@ void MainWindow::adaugaTaskComplex() {
         ui->tableTaskuriAdmin->setItem(r, 3, new QTableWidgetItem("InProgress"));
         ui->inputTaskAdmin->clear();
         ui->inputTaskAdmin->setProperty("idSesizare", 0);
-        QMessageBox::information(this, "Succes", "Task creat cu ID=" + QString::number(idTask));
+        incarcaItemsInventar();
+        QMessageBox::information(this, "Succes",
+                                 "Task creat cu ID=" + QString::number(idTask));
     } else {
         afiseazaEroare(raspuns["eroare"].toString());
     }
@@ -472,13 +582,16 @@ void MainWindow::convertSesizare() {
     ui->inputTaskAdmin->setText("REPARARE: " + (itemDesc ? itemDesc->text() : "problema"));
     ui->inputTaskAdmin->setProperty("idSesizare", itemId->text().toInt());
     ui->stackedWidget->setCurrentIndex(4);
-
     if (ui->listAngajatiTask->count() == 0) incarcaAngajati();
 
     QMessageBox::information(this, "Sesizare preluata",
-                             "Sesizarea #" + itemId->text() + " preluata.\nSelectati un angajat si apasati 'Adauga Task'.");
+                             "Sesizarea #" + itemId->text() +
+                                 " preluata.\nSelectati un angajat si apasati 'Adauga Task'.");
 }
 
+// ============================================================
+// ADMIN - EVENIMENTE
+// ============================================================
 void MainWindow::gestioneazaEvenimente() {
     QString numeEv = ui->inputNumeEveniment->text().trimmed();
     if (numeEv.isEmpty()) { afiseazaEroare("Introduceti numele evenimentului!"); return; }
@@ -499,8 +612,10 @@ void MainWindow::gestioneazaEvenimente() {
         int r = ui->tableEvenimenteAdmin->rowCount();
         ui->tableEvenimenteAdmin->insertRow(r);
         ui->tableEvenimenteAdmin->setItem(r, 0, new QTableWidgetItem(numeEv));
-        ui->tableEvenimenteAdmin->setItem(r, 1, new QTableWidgetItem(ui->dateEveniment->date().toString("dd/MM/yyyy")));
-        ui->tableEvenimenteAdmin->setItem(r, 2, new QTableWidgetItem(ui->comboLocatie->currentText()));
+        ui->tableEvenimenteAdmin->setItem(r, 1, new QTableWidgetItem(
+                                                    ui->dateEveniment->date().toString("dd/MM/yyyy")));
+        ui->tableEvenimenteAdmin->setItem(r, 2, new QTableWidgetItem(
+                                                    ui->comboLocatie->currentText()));
         ui->tableEvenimenteAdmin->setItem(r, 3, new QTableWidgetItem(
                                                     "Programat (ID=" + QString::number(raspuns["id_eveniment"].toInt()) + ")"));
         ui->inputNumeEveniment->clear();
@@ -509,10 +624,14 @@ void MainWindow::gestioneazaEvenimente() {
     }
 }
 
+// ============================================================
+// ADMIN - INVENTAR
+// ============================================================
 void MainWindow::gestionareInventar(bool adauga) {
     if (adauga) {
         int     cant = ui->spinCantitate ? ui->spinCantitate->value() : 1;
-        QString nume = ui->inputNumeMaterial ? ui->inputNumeMaterial->text().trimmed() : "Material";
+        QString nume = ui->inputNumeMaterial
+                           ? ui->inputNumeMaterial->text().trimmed() : "Material";
 
         QJsonObject cerere;
         cerere["actiune"]        = "adauga_in_depozit";
@@ -525,7 +644,8 @@ void MainWindow::gestionareInventar(bool adauga) {
         if (raspuns["succes"].toBool()) {
             int r = ui->tableInventar->rowCount();
             ui->tableInventar->insertRow(r);
-            ui->tableInventar->setItem(r, 0, new QTableWidgetItem(QString::number(raspuns["id_obiect"].toInt())));
+            ui->tableInventar->setItem(r, 0, new QTableWidgetItem(
+                                                 QString::number(raspuns["id_obiect"].toInt())));
             ui->tableInventar->setItem(r, 1, new QTableWidgetItem(nume));
             ui->tableInventar->setItem(r, 2, new QTableWidgetItem(QString::number(cant)));
             ui->tableInventar->setItem(r, 3, new QTableWidgetItem("Functional"));
@@ -536,7 +656,6 @@ void MainWindow::gestionareInventar(bool adauga) {
     } else {
         int row = ui->tableInventar->currentRow();
         if (row == -1) { afiseazaEroare("Selectati un obiect din inventar!"); return; }
-
         auto* itemId = ui->tableInventar->item(row, 0);
         if (!itemId) return;
         int idObiect = itemId->text().toInt();
@@ -556,85 +675,27 @@ void MainWindow::gestionareInventar(bool adauga) {
     }
 }
 
-void MainWindow::incarcaIstoric() {
-    QJsonObject raspuns = trimiteCerere({{"actiune", "get_istoric_taskuri"}});
-    if (!raspuns["succes"].toBool()) return;
-
-    auto* tabel = this->findChild<QTableWidget*>("tableIstoric");
-    auto* combo = this->findChild<QComboBox*>("comboFiltruIstoric");
-    if (!tabel) return;
-
-    QJsonArray date = raspuns["date"].toArray();
-
-    // Populeaza combo cu angajatii unici (doar pentru Admin)
-    if (combo && m_rolCurent == "Admin") {
-        QString selectat = combo->currentText();
-        combo->blockSignals(true);
-        combo->clear();
-        combo->addItem("Toti angajatii");
-        QStringList angajatiUnici;
-        for (const QJsonValue& v : date) {
-            QString ang = v.toObject()["angajat"].toString();
-            if (!ang.isEmpty() && !angajatiUnici.contains(ang))
-                angajatiUnici.append(ang);
-        }
-        for (const QString& a : angajatiUnici)
-            combo->addItem(a);
-        // Reconecteaza filtrul
-        connect(combo, &QComboBox::currentTextChanged, this, [=]() {
-            incarcaIstoric();
-        });
-        combo->blockSignals(false);
-        // Restaureaza selectia daca exista
-        int idx = combo->findText(selectat);
-        if (idx >= 0) combo->setCurrentIndex(idx);
-    }
-
-    // Filtru activ
-    QString filtru = (combo && combo->currentIndex() > 0)
-                         ? combo->currentText() : "";
-
-    // Actualizeaza header coloana 3 in functie de rol
-    if (tabel->columnCount() > 3) {
-        tabel->setHorizontalHeaderItem(3,
-                                       new QTableWidgetItem(m_rolCurent == "Admin" ? "Angajat" : "Status"));
-    }
-
-    tabel->setRowCount(0);
-    for (const QJsonValue& v : date) {
-        QJsonObject t = v.toObject();
-        QString angajat = t["angajat"].toString();
-
-        // Aplica filtrul
-        if (!filtru.isEmpty() && angajat != filtru) continue;
-
-        int r = tabel->rowCount();
-        tabel->insertRow(r);
-        int cols = tabel->columnCount();
-        if (cols > 0) tabel->setItem(r, 0, new QTableWidgetItem(t["data"].toString()));
-        if (cols > 1) tabel->setItem(r, 1, new QTableWidgetItem(t["tip"].toString()));
-        if (cols > 2) tabel->setItem(r, 2, new QTableWidgetItem(t["descriere"].toString()));
-        if (cols > 3) tabel->setItem(r, 3, new QTableWidgetItem(
-                                     m_rolCurent == "Admin" ? angajat : t["status"].toString()));
-    }
-}
-
+// ============================================================
+// ANGAJAT & GUEST
+// ============================================================
 void MainWindow::actiuniAngajat(int tip) {
     switch (tip) {
 
-    case 1: {
+    case 1: { // Incepe task - vizual
         int r = ui->tableTaskuriAngajat->currentRow();
         if (r == -1) { afiseazaEroare("Selectati un task!"); break; }
-        ui->tableTaskuriAngajat->setItem(r, 3, new QTableWidgetItem("In Lucru"));
+        int cols = ui->tableTaskuriAngajat->columnCount();
+        int colStatus = (cols >= 5) ? 4 : 3;
+        ui->tableTaskuriAngajat->setItem(r, colStatus,
+                                         new QTableWidgetItem("In Lucru"));
         break;
     }
 
-    case 2: {
+    case 2: { // Finalizeaza task
         int r = ui->tableTaskuriAngajat->currentRow();
         if (r == -1) { afiseazaEroare("Selectati un task!"); break; }
         auto* itemId = ui->tableTaskuriAngajat->item(r, 0);
         if (!itemId) { afiseazaEroare("ID task invalid."); break; }
-
         int idTask = itemId->text().toInt();
         if (idTask <= 0) { afiseazaEroare("ID task invalid. Reincarca lista."); break; }
 
@@ -642,7 +703,6 @@ void MainWindow::actiuniAngajat(int tip) {
         cerere["actiune"] = "finalizeaza_task";
         cerere["id_task"] = idTask;
         QJsonObject raspuns = trimiteCerere(cerere);
-
         if (raspuns["succes"].toBool()) {
             ui->tableTaskuriAngajat->removeRow(r);
             QMessageBox::information(this, "Succes", "Task finalizat! Raport creat automat.");
@@ -652,7 +712,7 @@ void MainWindow::actiuniAngajat(int tip) {
         break;
     }
 
-    case 3: {
+    case 3: { // Trimite raport
         int r = ui->tableTaskuriAngajat->currentRow();
         if (r == -1) { afiseazaEroare("Selectati un task!"); break; }
         auto* itemId = ui->tableTaskuriAngajat->item(r, 0);
@@ -668,7 +728,6 @@ void MainWindow::actiuniAngajat(int tip) {
         cerere["id_task"]   = itemId->text().toInt();
         cerere["descriere"] = detalii;
         QJsonObject raspuns = trimiteCerere(cerere);
-
         if (raspuns["succes"].toBool()) {
             if (ui->textDetaliiRaport) ui->textDetaliiRaport->clear();
             QMessageBox::information(this, "Succes", "Raportul a fost trimis!");
@@ -678,7 +737,7 @@ void MainWindow::actiuniAngajat(int tip) {
         break;
     }
 
-    case 4: {
+    case 4: { // Sesizare angajat
         if (!ui->inputSesizareTeren) break;
         QString desc = ui->inputSesizareTeren->text().trimmed();
         if (desc.isEmpty()) { afiseazaEroare("Completati sesizarea!"); break; }
@@ -688,18 +747,18 @@ void MainWindow::actiuniAngajat(int tip) {
         cerere["id_zona"]   = 1;
         cerere["descriere"] = desc;
         QJsonObject raspuns = trimiteCerere(cerere);
-
         if (raspuns["succes"].toBool()) {
             ui->inputSesizareTeren->clear();
             QMessageBox::information(this, "Succes",
-                                     "Sesizare trimisa! ID=" + QString::number(raspuns["id_sesizare"].toInt()));
+                                     "Sesizare trimisa! ID=" +
+                                         QString::number(raspuns["id_sesizare"].toInt()));
         } else {
             afiseazaEroare(raspuns["eroare"].toString());
         }
         break;
     }
 
-    case 5: {
+    case 5: { // Sesizare Guest
         if (!ui->textSesizareGuest) break;
         QString desc = ui->textSesizareGuest->toPlainText().trimmed();
         if (desc.isEmpty()) { afiseazaEroare("Completati sesizarea!"); break; }
@@ -709,17 +768,82 @@ void MainWindow::actiuniAngajat(int tip) {
         cerere["id_zona"]   = 1;
         cerere["descriere"] = desc;
         QJsonObject raspuns = trimiteCerere(cerere);
-
         if (raspuns["succes"].toBool()) {
             ui->textSesizareGuest->clear();
             QMessageBox::information(this, "Sesizare trimisa",
                                      "Sesizarea a fost inregistrata!\nID: " +
                                          QString::number(raspuns["id_sesizare"].toInt()));
         } else {
-            afiseazaEroare("Sesizarea nu a putut fi trimisa:\n" + raspuns["eroare"].toString());
+            afiseazaEroare("Sesizarea nu a putut fi trimisa:\n" +
+                           raspuns["eroare"].toString());
         }
         break;
     }
 
+    }
+}
+
+// ============================================================
+// RAPOARTE ANGAJATI
+// ============================================================
+void MainWindow::incarcaAngajatiRapoarte() {
+    QJsonObject raspuns = trimiteCerere({{"actiune", "get_angajati_cu_rapoarte"}});
+
+    auto* lista = this->findChild<QListWidget*>("listAngajatiRapoarte");
+    if (!lista) return;
+    lista->clear();
+
+    if (!raspuns["succes"].toBool()) {
+        lista->addItem("(Eroare la incarcare)");
+        return;
+    }
+
+    QJsonArray angajati = raspuns["date"].toArray();
+    if (angajati.isEmpty()) {
+        lista->addItem("(Niciun angajat nu a trimis rapoarte)");
+        return;
+    }
+    for (const QJsonValue& v : angajati) {
+        QJsonObject a = v.toObject();
+        QString label = a["nume"].toString() +
+                        "  (" + QString::number(a["nrRapoarte"].toInt()) + " rapoarte)";
+        auto* item = new QListWidgetItem(label);
+        item->setData(Qt::UserRole, a["id"].toInt());
+        lista->addItem(item);
+    }
+    if (auto* lbl = this->findChild<QLabel*>("labelRapoarteAngajat"))
+        lbl->setText("Selectati un angajat din stanga pentru a vedea rapoartele");
+}
+
+void MainWindow::incarcaRapoarteAngajat(int idAngajat) {
+    if (idAngajat <= 0) return;
+
+    QJsonObject cerere;
+    cerere["actiune"]    = "get_rapoarte_angajat";
+    cerere["id_angajat"] = idAngajat;
+    QJsonObject raspuns  = trimiteCerere(cerere);
+
+    auto* tabel = this->findChild<QTableWidget*>("tableRapoarte");
+    if (!tabel) return;
+    tabel->setRowCount(0);
+
+    if (!raspuns["succes"].toBool()) {
+        afiseazaEroare("Nu am putut incarca rapoartele:\n" +
+                       raspuns["eroare"].toString());
+        return;
+    }
+
+    QJsonArray rapoarte = raspuns["date"].toArray();
+    if (auto* lbl = this->findChild<QLabel*>("labelRapoarteAngajat"))
+        lbl->setText(QString::number(rapoarte.size()) + " rapoarte gasite");
+
+    for (const QJsonValue& v : rapoarte) {
+        QJsonObject r = v.toObject();
+        int row = tabel->rowCount();
+        tabel->insertRow(row);
+        tabel->setItem(row, 0, new QTableWidgetItem(r["task"].toString()));
+        tabel->setItem(row, 1, new QTableWidgetItem(r["data"].toString()));
+        tabel->setItem(row, 2, new QTableWidgetItem(r["tip"].toString()));
+        tabel->setItem(row, 3, new QTableWidgetItem(r["descriere"].toString()));
     }
 }

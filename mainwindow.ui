@@ -83,7 +83,7 @@ QPushButton#btnLogoutAdmin, QPushButton#btnLogoutAngajat, QPushButton#btnBackGue
        </font>
       </property>
       <property name="currentIndex">
-       <number>9</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -218,6 +218,16 @@ QPushButton#btnGoInventar {
 QPushButton#btnGoInventar:hover {
     background-color: #27ae60;
     color: white;
+}
+
+QPushButton#btnGoRapoarte {
+    border: 2px solid #8e44ad;
+    color: #8e44ad;
+}
+
+QPushButton#btnGoRapoarte:hover {
+    background-color: #8e44ad;
+    color: white;
 }</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -275,16 +285,27 @@ QPushButton#btnGoInventar:hover {
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="btnGoInventar">
-          <property name="text">
-           <string>Gestiune Inventar 📦</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="hLayoutInventarRapoarte">
+          <item>
+           <widget class="QPushButton" name="btnGoInventar">
+            <property name="text">
+             <string>Gestiune Inventar 📦</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnGoRapoarte">
+            <property name="text">
+             <string>Rapoarte Angajati 📋</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QPushButton" name="btnGoCreareCont">
           <property name="text">
-           <string>Inregistrare Angajat Nou</string>
+           <string>Inregistrare Angajat Nou👷</string>
           </property>
          </widget>
         </item>
@@ -794,6 +815,60 @@ QLabel#label_9 {
         </item>
         <item>
          <widget class="QListWidget" name="listAngajatiTask"/>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="vLayoutAsociere">
+          <item>
+           <layout class="QHBoxLayout" name="hLayoutAsociereRow">
+            <item>
+             <widget class="QLabel" name="labelItemTask">
+              <property name="text">
+               <string>Item inventar:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboItemInventar">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <item>
+               <property name="text">
+                <string>(Selecteaza item...)</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelCantTask">
+              <property name="text">
+               <string>Cant:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="spinCantitateTask">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>999</number>
+              </property>
+              <property name="value">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnAsociaItem">
+            <property name="text">
+             <string>Asociaza Item 🔗</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QPushButton" name="btnAdaugaTaskManual">
@@ -1408,6 +1483,157 @@ QPushButton#btnBackDinCreare:hover {
          <widget class="QPushButton" name="btnBackDinCreare">
           <property name="text">
            <string>Anuleaza</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageRapoarte">
+       <property name="styleSheet">
+        <string notr="true">
+QWidget#pageRapoarte {
+    background-color: #f5f7fa;
+}
+QListWidget#listAngajatiRapoarte {
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    background: white;
+    font-size: 13px;
+}
+QListWidget#listAngajatiRapoarte::item:selected {
+    background-color: #8e44ad;
+    color: white;
+    border-radius: 4px;
+}
+QTableWidget#tableRapoarte {
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    background: white;
+    gridline-color: #f1f2f6;
+}
+QPushButton#btnBackDinRapoarte {
+    background-color: #636e72;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 13px;
+}
+QPushButton#btnBackDinRapoarte:hover {
+    background-color: #2d3436;
+}
+        </string>
+       </property>
+       <layout class="QVBoxLayout" name="vLayoutRapoarte">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <property name="leftMargin">
+         <number>25</number>
+        </property>
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <property name="rightMargin">
+         <number>25</number>
+        </property>
+        <property name="bottomMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="labelTitluRapoarte">
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>15</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>RAPOARTE ANGAJATI</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSplitter" name="splitterRapoarte">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <widget class="QWidget" name="widgetStanga">
+           <layout class="QVBoxLayout" name="vLayoutStanga">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="labelAngajatiR">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Angajati</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="listAngajatiRapoarte"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="widgetDreapta">
+           <layout class="QVBoxLayout" name="vLayoutDreapta">
+            <property name="spacing">
+             <number>8</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="labelRapoarteAngajat">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Selectati un angajat din stanga</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTableWidget" name="tableRapoarte">
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>Task</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Data</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Tip</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Descriere</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnBackDinRapoarte">
+          <property name="text">
+           <string>Go Back</string>
           </property>
          </widget>
         </item>

@@ -878,7 +878,6 @@ CMakeFiles/Gestionare_parcuriV2.dir/main.cpp.obj: C:/Qt_work/Gestionare_parcuriV
 
 CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: C:/Qt_work/Gestionare_parcuriV2/mainwindow.cpp \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QDate \
-  C:/Qt/6.11.0/mingw_64/include/QtCore/QDebug \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonArray \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonDocument \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonObject \
@@ -1095,6 +1094,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: C:/Qt_work/Gestionare_pa
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QMessageBox \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QPushButton \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSpinBox \
+  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSplitter \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QStackedWidget \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QStatusBar \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTabWidget \
@@ -1134,6 +1134,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: C:/Qt_work/Gestionare_pa
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/qsizepolicy.h \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/qslider.h \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/qspinbox.h \
+  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qsplitter.h \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/qstackedwidget.h \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/qstatusbar.h \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/qstyle.h \
@@ -1694,8 +1695,6 @@ C:/Qt/6.11.0/mingw_64/include/QtCore/qpair.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qpoint.h:
 
-C:/Qt/6.11.0/mingw_64/include/QtCore/QDebug:
-
 C:/Qt/6.11.0/mingw_64/include/QtCore/qdeadlinetimer.h:
 
 C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/corecrt_stdio_config.h:
@@ -1951,6 +1950,8 @@ C:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractslider.h:
 C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/_mingw_secapi.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractspinbox.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtWidgets/qsplitter.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qcoreapplication.h:
 
@@ -2357,6 +2358,8 @@ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QListWidget:
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/QPushButton:
 
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSpinBox:
+
+C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSplitter:
 
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTabWidget:
 

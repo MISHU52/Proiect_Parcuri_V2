@@ -477,6 +477,8 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractbutton.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSpinBox \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qspinbox.h \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSplitter \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/qsplitter.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QStackedWidget \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qstackedwidget.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QStatusBar \
@@ -496,5 +498,5 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTableWidgetItem \
  C:/Qt/6.11.0/mingw_64/include/QtCore/QDate \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QLineEdit \
- C:/Qt/6.11.0/mingw_64/include/QtCore/QDebug \
- C:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSpinBox
