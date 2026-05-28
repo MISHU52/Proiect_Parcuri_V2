@@ -492,6 +492,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qtableview.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTextEdit \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qtextedit.h \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTimeEdit \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QVBoxLayout \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QWidget \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QMessageBox \
@@ -507,4 +508,5 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDoubleSpinBox \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTextEdit \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTimeEdit \
- C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDateEdit
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDateEdit \
+ C:/Qt/6.11.0/mingw_64/include/QtGui/QColor

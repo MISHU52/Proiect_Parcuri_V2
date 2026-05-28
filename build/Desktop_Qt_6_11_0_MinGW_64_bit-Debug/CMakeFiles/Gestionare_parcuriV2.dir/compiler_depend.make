@@ -1046,6 +1046,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: C:/Qt_work/Gestionare_pa
   C:/Qt/6.11.0/mingw_64/include/QtCore/qversiontagging.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qxptype_traits.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qyieldcpu.h \
+  C:/Qt/6.11.0/mingw_64/include/QtGui/QColor \
   C:/Qt/6.11.0/mingw_64/include/QtGui/qaction.h \
   C:/Qt/6.11.0/mingw_64/include/QtGui/qbitmap.h \
   C:/Qt/6.11.0/mingw_64/include/QtGui/qbrush.h \
@@ -2365,6 +2366,8 @@ C:/Qt/6.11.0/mingw_64/include/QtGui/qguiapplication_platform.h:
 C:/Qt/6.11.0/mingw_64/include/QtGui/qinputmethod.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qtimezone.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtGui/QColor:
 
 C:/Qt/6.11.0/mingw_64/include/QtGui/qtextdocument.h:
 

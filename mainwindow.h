@@ -27,6 +27,8 @@ private slots:
     void adaugaTaskComplex();
     void convertSesizare();
     void gestioneazaEvenimente();
+    void incarcaFirmeOrganizatoare();
+    void incarcaEvenimente();
     void gestionareInventar(bool adauga);
     void creeazaAngajat();
     void reincarcaAngajati();
@@ -60,6 +62,7 @@ private:
     void incarcaIstoric();
     void incarcaInventarAngajati();
     void incarcaInventarMeu();
+    void incarcaContracteFurnizori();
     void incarcaTaskuriAdmin();
     void incarcaIstoricAngajat();
     void incarcaAngajatiRapoarte();

@@ -15,6 +15,7 @@
 #include <QTimeEdit>
 #include <QDateEdit>
 #include <QTimer>
+#include <QColor>
 
 const QString MainWindow::SERVER_IP = "172.20.10.3";
 
@@ -73,7 +74,14 @@ MainWindow::MainWindow(QWidget *parent)
         // astfel raman consistente chiar dupa logout/login
         incarcaTaskuriAdmin();
     });
-    connectBtn("btnGoEvents",   [=](){ ui->stackedWidget->setCurrentIndex(5); });
+    connectBtn("btnGoEvents",   [=](){
+        ui->stackedWidget->setCurrentIndex(5);
+        incarcaFirmeOrganizatoare();
+        incarcaEvenimente();
+        // Set today's date
+        if (auto* d = this->findChild<QDateEdit*>("dateEveniment"))
+            d->setDate(QDate::currentDate());
+    });
     connectBtn("btnGoSesizari", [=](){ ui->stackedWidget->setCurrentIndex(6); incarcaSesizari(); });
     connectBtn("btnGoIstoric",  [=](){ ui->stackedWidget->setCurrentIndex(7); incarcaIstoric(); });
     connectBtn("btnGoInventar", [=](){
@@ -82,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
         incarcaCategoriiInventar();
         incarcaFurnizori();
         incarcaInventarAngajati();
-        // Set today's date on date picker
+        incarcaContracteFurnizori();
         if (auto* d = this->findChild<QDateEdit*>("dateAchizitieInventar"))
             d->setDate(QDate::currentDate());
     });
@@ -181,6 +189,27 @@ MainWindow::MainWindow(QWidget *parent)
 
     // ADMIN - EVENIMENTE
     connectBtn("btnAprobaEveniment", &MainWindow::gestioneazaEvenimente);
+
+    connectBtn("btnVeziEvenimente", [=](){ incarcaEvenimente(); });
+
+    connectBtn("btnIncheieEveniment", [=](){
+        int row = ui->tableEvenimenteAdmin->currentRow();
+        if (row == -1) { afiseazaEroare("Selectati un eveniment din tabel!"); return; }
+        auto* itemId = ui->tableEvenimenteAdmin->item(row, 0);
+        if (!itemId) return;
+        int idEv = itemId->text().toInt();
+
+        QJsonObject cerere;
+        cerere["actiune"]      = "incheie_eveniment";
+        cerere["id_eveniment"] = idEv;
+        QJsonObject raspuns = trimiteCerere(cerere);
+        if (raspuns["succes"].toBool()) {
+            incarcaEvenimente();
+            QMessageBox::information(this, "Succes", "Evenimentul a fost incheiat.");
+        } else {
+            afiseazaEroare(raspuns["eroare"].toString());
+        }
+    });
 
     // ADMIN - INVENTAR (CERINTA 2+3)
     connectBtn("btnAddInventar",    [=](){ gestionareInventar(true);  });
@@ -440,8 +469,9 @@ void MainWindow::incarcaAngajatiTabel() {
     }
 }
 
-void MainWindow::incarcaInventar(int idZona) {
-    QJsonObject raspuns = trimiteCerere({{"actiune", "get_inventar_zona"}, {"id_zona", idZona}});
+void MainWindow::incarcaInventar(int) {
+    // Afiseaza toate obiectele din depozit
+    QJsonObject raspuns = trimiteCerere({{"actiune", "get_inventar_depozit_complet"}});
     if (!raspuns["succes"].toBool()) return;
     ui->tableInventar->setRowCount(0);
     for (const QJsonValue& v : raspuns["date"].toArray()) {
@@ -451,7 +481,7 @@ void MainWindow::incarcaInventar(int idZona) {
         ui->tableInventar->setItem(r, 0, new QTableWidgetItem(QString::number(o["id"].toInt())));
         ui->tableInventar->setItem(r, 1, new QTableWidgetItem(o["subtip"].toString()));
         ui->tableInventar->setItem(r, 2, new QTableWidgetItem(QString::number(o["cantitate"].toInt())));
-        ui->tableInventar->setItem(r, 3, new QTableWidgetItem(o["stare"].toString()));
+        ui->tableInventar->setItem(r, 3, new QTableWidgetItem(o["locatie"].toString()));
     }
 }
 
@@ -519,6 +549,29 @@ void MainWindow::incarcaInventarAngajati() {
         tabel->setItem(r, 2, new QTableWidgetItem(o["subtip"].toString()));
         tabel->setItem(r, 3, new QTableWidgetItem("Task #" + o["task"].toString()));
         tabel->setItem(r, 4, new QTableWidgetItem(o["stare"].toString()));
+    }
+}
+
+void MainWindow::incarcaContracteFurnizori() {
+    auto* tabel = this->findChild<QTableWidget*>("tableContracteFurnizori");
+    if (!tabel) return;
+
+    QJsonObject raspuns = trimiteCerere({{"actiune", "get_contracte_furnizori"}});
+    tabel->setRowCount(0);
+    if (!raspuns["succes"].toBool()) return;
+
+    for (const QJsonValue& v : raspuns["date"].toArray()) {
+        QJsonObject c = v.toObject();
+        int r = tabel->rowCount();
+        tabel->insertRow(r);
+        tabel->setItem(r, 0, new QTableWidgetItem(QString::number(c["id"].toInt())));
+        tabel->setItem(r, 1, new QTableWidgetItem(c["firma"].toString()));
+        tabel->setItem(r, 2, new QTableWidgetItem(
+            QString::number(c["valoare"].toDouble(), 'f', 2) + " RON"));
+        tabel->setItem(r, 3, new QTableWidgetItem(c["dataSemnare"].toString()));
+        tabel->setItem(r, 4, new QTableWidgetItem(c["dataLivrare"].toString()));
+        tabel->setItem(r, 5, new QTableWidgetItem(
+            QString::number(c["nrObiecte"].toInt()) + " obiecte"));
     }
 }
 
@@ -749,22 +802,69 @@ void MainWindow::convertSesizare() {
 // ============================================================
 // CERINTA 1: ADMIN - EVENIMENTE cu verificare suprapunere
 // ============================================================
+void MainWindow::incarcaFirmeOrganizatoare() {
+    auto* combo = this->findChild<QComboBox*>("comboFirmaOrganizator");
+    if (!combo) return;
+    QJsonObject raspuns = trimiteCerere({{"actiune", "get_firme_organizatoare"}});
+    combo->clear();
+    combo->addItem("(Selecteaza firma...)");
+    if (!raspuns["succes"].toBool()) return;
+    for (const QJsonValue& v : raspuns["date"].toArray()) {
+        QJsonObject f = v.toObject();
+        combo->addItem(f["nume"].toString());
+        combo->setItemData(combo->count() - 1, f["id"].toInt(), Qt::UserRole);
+    }
+}
+
+void MainWindow::incarcaEvenimente() {
+    QJsonObject raspuns = trimiteCerere({{"actiune", "get_evenimente"}});
+    ui->tableEvenimenteAdmin->setRowCount(0);
+    if (!raspuns["succes"].toBool()) return;
+    for (const QJsonValue& v : raspuns["date"].toArray()) {
+        QJsonObject ev = v.toObject();
+        int r = ui->tableEvenimenteAdmin->rowCount();
+        ui->tableEvenimenteAdmin->insertRow(r);
+        ui->tableEvenimenteAdmin->setItem(r, 0, new QTableWidgetItem(
+            QString::number(ev["id"].toInt())));
+        ui->tableEvenimenteAdmin->setItem(r, 1, new QTableWidgetItem(
+            ev["denumire"].toString()));
+        ui->tableEvenimenteAdmin->setItem(r, 2, new QTableWidgetItem(
+            ev["data"].toString()));
+        ui->tableEvenimenteAdmin->setItem(r, 3, new QTableWidgetItem(
+            ev["oraStart"].toString().left(5)));
+        ui->tableEvenimenteAdmin->setItem(r, 4, new QTableWidgetItem(
+            ev["oraSfarsit"].toString().left(5)));
+        ui->tableEvenimenteAdmin->setItem(r, 5, new QTableWidgetItem(
+            ev["firma"].toString()));
+        QString status = ev["status"].toString();
+        auto* itemStatus = new QTableWidgetItem(status);
+        if (status == "Incheiat")
+            itemStatus->setForeground(QColor(150, 150, 150));
+        else
+            itemStatus->setForeground(QColor(0, 150, 0));
+        ui->tableEvenimenteAdmin->setItem(r, 6, itemStatus);
+    }
+}
+
 void MainWindow::gestioneazaEvenimente() {
     QString numeEv = ui->inputNumeEveniment->text().trimmed();
     if (numeEv.isEmpty()) { afiseazaEroare("Introduceti numele evenimentului!"); return; }
 
     auto* timeStart   = this->findChild<QTimeEdit*>("timeStartEveniment");
     auto* timeSfarsit = this->findChild<QTimeEdit*>("timeSfarsitEveniment");
+    auto* comboFirma  = this->findChild<QComboBox*>("comboFirmaOrganizator");
 
-    QString oraStart   = timeStart   ? timeStart->time().toString("HH:mm")   : "10:00";
-    QString oraSfarsit = timeSfarsit ? timeSfarsit->time().toString("HH:mm") : "22:00";
-
-    // Verifica ore valide
-    if (timeStart && timeSfarsit &&
-        timeStart->time() >= timeSfarsit->time()) {
-        afiseazaEroare("Ora de sfarsit trebuie sa fie dupa ora de start!");
-        return;
+    if (!timeStart || !timeSfarsit) { afiseazaEroare("Selectati orele!"); return; }
+    if (timeStart->time() >= timeSfarsit->time()) {
+        afiseazaEroare("Ora de sfarsit trebuie sa fie dupa ora de start!"); return;
     }
+    if (!comboFirma || comboFirma->currentIndex() == 0) {
+        afiseazaEroare("Selectati firma organizatoare!"); return;
+    }
+
+    QString oraStart   = timeStart->time().toString("HH:mm");
+    QString oraSfarsit = timeSfarsit->time().toString("HH:mm");
+    int idFirma        = comboFirma->currentData(Qt::UserRole).toInt();
 
     QJsonObject cerere;
     cerere["actiune"]     = "creeaza_eveniment";
@@ -774,23 +874,13 @@ void MainWindow::gestioneazaEvenimente() {
     cerere["data"]        = ui->dateEveniment->date().toString("yyyy-MM-dd");
     cerere["ora_start"]   = oraStart;
     cerere["ora_sfarsit"] = oraSfarsit;
-    cerere["id_firma"]    = 3;
+    cerere["id_firma"]    = idFirma;
 
     QJsonObject raspuns = trimiteCerere(cerere);
     if (raspuns["succes"].toBool()) {
-        int r = ui->tableEvenimenteAdmin->rowCount();
-        ui->tableEvenimenteAdmin->insertRow(r);
-        ui->tableEvenimenteAdmin->setItem(r, 0, new QTableWidgetItem(numeEv));
-        ui->tableEvenimenteAdmin->setItem(r, 1, new QTableWidgetItem(
-            ui->dateEveniment->date().toString("dd/MM/yyyy") +
-            " " + oraStart + "-" + oraSfarsit));
-        ui->tableEvenimenteAdmin->setItem(r, 2, new QTableWidgetItem(
-            ui->comboLocatie->currentText()));
-        ui->tableEvenimenteAdmin->setItem(r, 3, new QTableWidgetItem(
-            "Programat (ID=" + QString::number(raspuns["id_eveniment"].toInt()) + ")"));
         ui->inputNumeEveniment->clear();
+        incarcaEvenimente();
     } else {
-        // CERINTA 1: eroare suprapunere vine de la triggerul SQL din backend
         afiseazaEroare(raspuns["eroare"].toString());
     }
 }
@@ -842,6 +932,7 @@ void MainWindow::gestionareInventar(bool adauga) {
             incarcaInventar();
             incarcaItemsInventar();
             incarcaInventarAngajati();
+            incarcaContracteFurnizori();
             QMessageBox::information(this, "Succes",
                 "Obiect adaugat in depozit. ID=" +
                 QString::number(raspuns["id_obiect"].toInt()));
@@ -980,7 +1071,8 @@ void MainWindow::actiuniAngajat(int tip) {
         QJsonObject raspuns = trimiteCerere(cerere);
         if (raspuns["succes"].toBool()) {
             this->findChild<QTextEdit*>("textSesizareGuest")->clear();
-            QMessageBox::information(this, "Sesizare trimisa", "Sesizarea a fost inregistrata!\nID: " +
+            QMessageBox::information(this, "Sesizare trimisa",
+                "Sesizarea a fost inregistrata!\nID: " +
                 QString::number(raspuns["id_sesizare"].toInt()));
         } else afiseazaEroare(raspuns["eroare"].toString());
         break;

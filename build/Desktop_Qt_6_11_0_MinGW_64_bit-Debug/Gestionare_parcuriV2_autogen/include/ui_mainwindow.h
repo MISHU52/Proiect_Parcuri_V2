@@ -31,6 +31,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextEdit>
+#include <QtWidgets/QTimeEdit>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -123,10 +124,23 @@ public:
     QFrame *frameFormular;
     QVBoxLayout *verticalLayout_16;
     QLineEdit *inputNumeEveniment;
+    QHBoxLayout *hLayoutEv1;
+    QLabel *lblDataEv;
     QDateEdit *dateEveniment;
+    QLabel *lblOraStart;
+    QTimeEdit *timeStartEveniment;
+    QLabel *lblOraSfarsit;
+    QTimeEdit *timeSfarsitEveniment;
+    QHBoxLayout *hLayoutEv2;
+    QLabel *lblLocatie;
     QComboBox *comboLocatie;
+    QLabel *lblFirmaEv;
+    QComboBox *comboFirmaOrganizator;
     QTableWidget *tableEvenimenteAdmin;
+    QHBoxLayout *hLayoutEvBtns;
     QPushButton *btnAprobaEveniment;
+    QPushButton *btnVeziEvenimente;
+    QPushButton *btnIncheieEveniment;
     QPushButton *btnBackToDash_2;
     QWidget *page_6;
     QVBoxLayout *verticalLayout_18;
@@ -165,6 +179,8 @@ public:
     QPushButton *btnUseInventar;
     QLabel *labelInventarAngajati;
     QTableWidget *tableInventarAngajati;
+    QLabel *labelContracteFurnizori;
+    QTableWidget *tableContracteFurnizori;
     QPushButton *btnBackToDash_5;
     QWidget *pageCreareAngajat;
     QVBoxLayout *verticalLayout_11;
@@ -582,10 +598,7 @@ public:
         vLayoutInventarAngajat->setObjectName("vLayoutInventarAngajat");
         labelInventarMeu = new QLabel(tabInventarAngajat);
         labelInventarMeu->setObjectName("labelInventarMeu");
-        QFont font6;
-        font6.setFamilies({QString::fromUtf8("Segoe UI")});
-        font6.setBold(true);
-        labelInventarMeu->setFont(font6);
+        labelInventarMeu->setFont(font);
 
         vLayoutInventarAngajat->addWidget(labelInventarMeu);
 
@@ -919,11 +932,11 @@ public:
         verticalLayout_17->setContentsMargins(30, 30, 30, 30);
         labelTitluEvenimente = new QLabel(page_5);
         labelTitluEvenimente->setObjectName("labelTitluEvenimente");
-        QFont font7;
-        font7.setFamilies({QString::fromUtf8("Segoe UI")});
-        font7.setPointSize(15);
-        font7.setBold(true);
-        labelTitluEvenimente->setFont(font7);
+        QFont font6;
+        font6.setFamilies({QString::fromUtf8("Segoe UI")});
+        font6.setPointSize(15);
+        font6.setBold(true);
+        labelTitluEvenimente->setFont(font6);
 
         verticalLayout_17->addWidget(labelTitluEvenimente);
 
@@ -932,30 +945,83 @@ public:
         frameFormular->setFrameShape(QFrame::Shape::StyledPanel);
         frameFormular->setFrameShadow(QFrame::Shadow::Raised);
         verticalLayout_16 = new QVBoxLayout(frameFormular);
-        verticalLayout_16->setSpacing(15);
+        verticalLayout_16->setSpacing(10);
         verticalLayout_16->setObjectName("verticalLayout_16");
         inputNumeEveniment = new QLineEdit(frameFormular);
         inputNumeEveniment->setObjectName("inputNumeEveniment");
 
         verticalLayout_16->addWidget(inputNumeEveniment);
 
+        hLayoutEv1 = new QHBoxLayout();
+        hLayoutEv1->setObjectName("hLayoutEv1");
+        lblDataEv = new QLabel(frameFormular);
+        lblDataEv->setObjectName("lblDataEv");
+
+        hLayoutEv1->addWidget(lblDataEv);
+
         dateEveniment = new QDateEdit(frameFormular);
         dateEveniment->setObjectName("dateEveniment");
         dateEveniment->setCalendarPopup(true);
 
-        verticalLayout_16->addWidget(dateEveniment);
+        hLayoutEv1->addWidget(dateEveniment);
+
+        lblOraStart = new QLabel(frameFormular);
+        lblOraStart->setObjectName("lblOraStart");
+
+        hLayoutEv1->addWidget(lblOraStart);
+
+        timeStartEveniment = new QTimeEdit(frameFormular);
+        timeStartEveniment->setObjectName("timeStartEveniment");
+        timeStartEveniment->setTime(QTime(10, 0, 0));
+
+        hLayoutEv1->addWidget(timeStartEveniment);
+
+        lblOraSfarsit = new QLabel(frameFormular);
+        lblOraSfarsit->setObjectName("lblOraSfarsit");
+
+        hLayoutEv1->addWidget(lblOraSfarsit);
+
+        timeSfarsitEveniment = new QTimeEdit(frameFormular);
+        timeSfarsitEveniment->setObjectName("timeSfarsitEveniment");
+        timeSfarsitEveniment->setTime(QTime(22, 0, 0));
+
+        hLayoutEv1->addWidget(timeSfarsitEveniment);
+
+
+        verticalLayout_16->addLayout(hLayoutEv1);
+
+        hLayoutEv2 = new QHBoxLayout();
+        hLayoutEv2->setObjectName("hLayoutEv2");
+        lblLocatie = new QLabel(frameFormular);
+        lblLocatie->setObjectName("lblLocatie");
+
+        hLayoutEv2->addWidget(lblLocatie);
 
         comboLocatie = new QComboBox(frameFormular);
         comboLocatie->setObjectName("comboLocatie");
 
-        verticalLayout_16->addWidget(comboLocatie);
+        hLayoutEv2->addWidget(comboLocatie);
+
+        lblFirmaEv = new QLabel(frameFormular);
+        lblFirmaEv->setObjectName("lblFirmaEv");
+
+        hLayoutEv2->addWidget(lblFirmaEv);
+
+        comboFirmaOrganizator = new QComboBox(frameFormular);
+        comboFirmaOrganizator->addItem(QString());
+        comboFirmaOrganizator->setObjectName("comboFirmaOrganizator");
+
+        hLayoutEv2->addWidget(comboFirmaOrganizator);
+
+
+        verticalLayout_16->addLayout(hLayoutEv2);
 
 
         verticalLayout_17->addWidget(frameFormular);
 
         tableEvenimenteAdmin = new QTableWidget(page_5);
-        if (tableEvenimenteAdmin->columnCount() < 4)
-            tableEvenimenteAdmin->setColumnCount(4);
+        if (tableEvenimenteAdmin->columnCount() < 7)
+            tableEvenimenteAdmin->setColumnCount(7);
         QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
         tableEvenimenteAdmin->setHorizontalHeaderItem(0, __qtablewidgetitem13);
         QTableWidgetItem *__qtablewidgetitem14 = new QTableWidgetItem();
@@ -964,16 +1030,37 @@ public:
         tableEvenimenteAdmin->setHorizontalHeaderItem(2, __qtablewidgetitem15);
         QTableWidgetItem *__qtablewidgetitem16 = new QTableWidgetItem();
         tableEvenimenteAdmin->setHorizontalHeaderItem(3, __qtablewidgetitem16);
+        QTableWidgetItem *__qtablewidgetitem17 = new QTableWidgetItem();
+        tableEvenimenteAdmin->setHorizontalHeaderItem(4, __qtablewidgetitem17);
+        QTableWidgetItem *__qtablewidgetitem18 = new QTableWidgetItem();
+        tableEvenimenteAdmin->setHorizontalHeaderItem(5, __qtablewidgetitem18);
+        QTableWidgetItem *__qtablewidgetitem19 = new QTableWidgetItem();
+        tableEvenimenteAdmin->setHorizontalHeaderItem(6, __qtablewidgetitem19);
         tableEvenimenteAdmin->setObjectName("tableEvenimenteAdmin");
         tableEvenimenteAdmin->horizontalHeader()->setCascadingSectionResizes(false);
         tableEvenimenteAdmin->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_17->addWidget(tableEvenimenteAdmin);
 
+        hLayoutEvBtns = new QHBoxLayout();
+        hLayoutEvBtns->setObjectName("hLayoutEvBtns");
         btnAprobaEveniment = new QPushButton(page_5);
         btnAprobaEveniment->setObjectName("btnAprobaEveniment");
 
-        verticalLayout_17->addWidget(btnAprobaEveniment);
+        hLayoutEvBtns->addWidget(btnAprobaEveniment);
+
+        btnVeziEvenimente = new QPushButton(page_5);
+        btnVeziEvenimente->setObjectName("btnVeziEvenimente");
+
+        hLayoutEvBtns->addWidget(btnVeziEvenimente);
+
+        btnIncheieEveniment = new QPushButton(page_5);
+        btnIncheieEveniment->setObjectName("btnIncheieEveniment");
+
+        hLayoutEvBtns->addWidget(btnIncheieEveniment);
+
+
+        verticalLayout_17->addLayout(hLayoutEvBtns);
 
         btnBackToDash_2 = new QPushButton(page_5);
         btnBackToDash_2->setObjectName("btnBackToDash_2");
@@ -1023,21 +1110,21 @@ public:
         verticalLayout_18->setContentsMargins(30, 30, 30, 30);
         label_31 = new QLabel(page_6);
         label_31->setObjectName("label_31");
-        label_31->setFont(font7);
+        label_31->setFont(font6);
 
         verticalLayout_18->addWidget(label_31);
 
         tableSesizariAdmin = new QTableWidget(page_6);
         if (tableSesizariAdmin->columnCount() < 4)
             tableSesizariAdmin->setColumnCount(4);
-        QTableWidgetItem *__qtablewidgetitem17 = new QTableWidgetItem();
-        tableSesizariAdmin->setHorizontalHeaderItem(0, __qtablewidgetitem17);
-        QTableWidgetItem *__qtablewidgetitem18 = new QTableWidgetItem();
-        tableSesizariAdmin->setHorizontalHeaderItem(1, __qtablewidgetitem18);
-        QTableWidgetItem *__qtablewidgetitem19 = new QTableWidgetItem();
-        tableSesizariAdmin->setHorizontalHeaderItem(2, __qtablewidgetitem19);
         QTableWidgetItem *__qtablewidgetitem20 = new QTableWidgetItem();
-        tableSesizariAdmin->setHorizontalHeaderItem(3, __qtablewidgetitem20);
+        tableSesizariAdmin->setHorizontalHeaderItem(0, __qtablewidgetitem20);
+        QTableWidgetItem *__qtablewidgetitem21 = new QTableWidgetItem();
+        tableSesizariAdmin->setHorizontalHeaderItem(1, __qtablewidgetitem21);
+        QTableWidgetItem *__qtablewidgetitem22 = new QTableWidgetItem();
+        tableSesizariAdmin->setHorizontalHeaderItem(2, __qtablewidgetitem22);
+        QTableWidgetItem *__qtablewidgetitem23 = new QTableWidgetItem();
+        tableSesizariAdmin->setHorizontalHeaderItem(3, __qtablewidgetitem23);
         tableSesizariAdmin->setObjectName("tableSesizariAdmin");
         tableSesizariAdmin->horizontalHeader()->setStretchLastSection(true);
 
@@ -1095,7 +1182,7 @@ public:
         horizontalLayout_13->setObjectName("horizontalLayout_13");
         label_33 = new QLabel(page_7);
         label_33->setObjectName("label_33");
-        label_33->setFont(font7);
+        label_33->setFont(font6);
 
         horizontalLayout_13->addWidget(label_33);
 
@@ -1110,14 +1197,14 @@ public:
         tableIstoric = new QTableWidget(page_7);
         if (tableIstoric->columnCount() < 4)
             tableIstoric->setColumnCount(4);
-        QTableWidgetItem *__qtablewidgetitem21 = new QTableWidgetItem();
-        tableIstoric->setHorizontalHeaderItem(0, __qtablewidgetitem21);
-        QTableWidgetItem *__qtablewidgetitem22 = new QTableWidgetItem();
-        tableIstoric->setHorizontalHeaderItem(1, __qtablewidgetitem22);
-        QTableWidgetItem *__qtablewidgetitem23 = new QTableWidgetItem();
-        tableIstoric->setHorizontalHeaderItem(2, __qtablewidgetitem23);
         QTableWidgetItem *__qtablewidgetitem24 = new QTableWidgetItem();
-        tableIstoric->setHorizontalHeaderItem(3, __qtablewidgetitem24);
+        tableIstoric->setHorizontalHeaderItem(0, __qtablewidgetitem24);
+        QTableWidgetItem *__qtablewidgetitem25 = new QTableWidgetItem();
+        tableIstoric->setHorizontalHeaderItem(1, __qtablewidgetitem25);
+        QTableWidgetItem *__qtablewidgetitem26 = new QTableWidgetItem();
+        tableIstoric->setHorizontalHeaderItem(2, __qtablewidgetitem26);
+        QTableWidgetItem *__qtablewidgetitem27 = new QTableWidgetItem();
+        tableIstoric->setHorizontalHeaderItem(3, __qtablewidgetitem27);
         tableIstoric->setObjectName("tableIstoric");
         tableIstoric->horizontalHeader()->setStretchLastSection(true);
 
@@ -1161,21 +1248,21 @@ public:
         verticalLayout_20->setObjectName("verticalLayout_20");
         label_32 = new QLabel(page_8);
         label_32->setObjectName("label_32");
-        label_32->setFont(font7);
+        label_32->setFont(font6);
 
         verticalLayout_20->addWidget(label_32);
 
         tableInventar = new QTableWidget(page_8);
         if (tableInventar->columnCount() < 4)
             tableInventar->setColumnCount(4);
-        QTableWidgetItem *__qtablewidgetitem25 = new QTableWidgetItem();
-        tableInventar->setHorizontalHeaderItem(0, __qtablewidgetitem25);
-        QTableWidgetItem *__qtablewidgetitem26 = new QTableWidgetItem();
-        tableInventar->setHorizontalHeaderItem(1, __qtablewidgetitem26);
-        QTableWidgetItem *__qtablewidgetitem27 = new QTableWidgetItem();
-        tableInventar->setHorizontalHeaderItem(2, __qtablewidgetitem27);
         QTableWidgetItem *__qtablewidgetitem28 = new QTableWidgetItem();
-        tableInventar->setHorizontalHeaderItem(3, __qtablewidgetitem28);
+        tableInventar->setHorizontalHeaderItem(0, __qtablewidgetitem28);
+        QTableWidgetItem *__qtablewidgetitem29 = new QTableWidgetItem();
+        tableInventar->setHorizontalHeaderItem(1, __qtablewidgetitem29);
+        QTableWidgetItem *__qtablewidgetitem30 = new QTableWidgetItem();
+        tableInventar->setHorizontalHeaderItem(2, __qtablewidgetitem30);
+        QTableWidgetItem *__qtablewidgetitem31 = new QTableWidgetItem();
+        tableInventar->setHorizontalHeaderItem(3, __qtablewidgetitem31);
         tableInventar->setObjectName("tableInventar");
         tableInventar->horizontalHeader()->setStretchLastSection(true);
 
@@ -1236,10 +1323,10 @@ public:
 
         spinPretInventar = new QDoubleSpinBox(frame);
         spinPretInventar->setObjectName("spinPretInventar");
-        spinPretInventar->setDecimals(2);
         spinPretInventar->setMinimum(0.010000000000000);
         spinPretInventar->setMaximum(999999.989999999990687);
         spinPretInventar->setValue(100.000000000000000);
+        spinPretInventar->setDecimals(2);
 
         hLayoutInvRow2->addWidget(spinPretInventar);
 
@@ -1272,27 +1359,53 @@ public:
 
         labelInventarAngajati = new QLabel(page_8);
         labelInventarAngajati->setObjectName("labelInventarAngajati");
-        labelInventarAngajati->setFont(font6);
+        labelInventarAngajati->setFont(font);
 
         verticalLayout_20->addWidget(labelInventarAngajati);
 
         tableInventarAngajati = new QTableWidget(page_8);
         if (tableInventarAngajati->columnCount() < 5)
             tableInventarAngajati->setColumnCount(5);
-        QTableWidgetItem *__qtablewidgetitem29 = new QTableWidgetItem();
-        tableInventarAngajati->setHorizontalHeaderItem(0, __qtablewidgetitem29);
-        QTableWidgetItem *__qtablewidgetitem30 = new QTableWidgetItem();
-        tableInventarAngajati->setHorizontalHeaderItem(1, __qtablewidgetitem30);
-        QTableWidgetItem *__qtablewidgetitem31 = new QTableWidgetItem();
-        tableInventarAngajati->setHorizontalHeaderItem(2, __qtablewidgetitem31);
         QTableWidgetItem *__qtablewidgetitem32 = new QTableWidgetItem();
-        tableInventarAngajati->setHorizontalHeaderItem(3, __qtablewidgetitem32);
+        tableInventarAngajati->setHorizontalHeaderItem(0, __qtablewidgetitem32);
         QTableWidgetItem *__qtablewidgetitem33 = new QTableWidgetItem();
-        tableInventarAngajati->setHorizontalHeaderItem(4, __qtablewidgetitem33);
+        tableInventarAngajati->setHorizontalHeaderItem(1, __qtablewidgetitem33);
+        QTableWidgetItem *__qtablewidgetitem34 = new QTableWidgetItem();
+        tableInventarAngajati->setHorizontalHeaderItem(2, __qtablewidgetitem34);
+        QTableWidgetItem *__qtablewidgetitem35 = new QTableWidgetItem();
+        tableInventarAngajati->setHorizontalHeaderItem(3, __qtablewidgetitem35);
+        QTableWidgetItem *__qtablewidgetitem36 = new QTableWidgetItem();
+        tableInventarAngajati->setHorizontalHeaderItem(4, __qtablewidgetitem36);
         tableInventarAngajati->setObjectName("tableInventarAngajati");
         tableInventarAngajati->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_20->addWidget(tableInventarAngajati);
+
+        labelContracteFurnizori = new QLabel(page_8);
+        labelContracteFurnizori->setObjectName("labelContracteFurnizori");
+        labelContracteFurnizori->setFont(font);
+
+        verticalLayout_20->addWidget(labelContracteFurnizori);
+
+        tableContracteFurnizori = new QTableWidget(page_8);
+        if (tableContracteFurnizori->columnCount() < 6)
+            tableContracteFurnizori->setColumnCount(6);
+        QTableWidgetItem *__qtablewidgetitem37 = new QTableWidgetItem();
+        tableContracteFurnizori->setHorizontalHeaderItem(0, __qtablewidgetitem37);
+        QTableWidgetItem *__qtablewidgetitem38 = new QTableWidgetItem();
+        tableContracteFurnizori->setHorizontalHeaderItem(1, __qtablewidgetitem38);
+        QTableWidgetItem *__qtablewidgetitem39 = new QTableWidgetItem();
+        tableContracteFurnizori->setHorizontalHeaderItem(2, __qtablewidgetitem39);
+        QTableWidgetItem *__qtablewidgetitem40 = new QTableWidgetItem();
+        tableContracteFurnizori->setHorizontalHeaderItem(3, __qtablewidgetitem40);
+        QTableWidgetItem *__qtablewidgetitem41 = new QTableWidgetItem();
+        tableContracteFurnizori->setHorizontalHeaderItem(4, __qtablewidgetitem41);
+        QTableWidgetItem *__qtablewidgetitem42 = new QTableWidgetItem();
+        tableContracteFurnizori->setHorizontalHeaderItem(5, __qtablewidgetitem42);
+        tableContracteFurnizori->setObjectName("tableContracteFurnizori");
+        tableContracteFurnizori->horizontalHeader()->setStretchLastSection(true);
+
+        verticalLayout_20->addWidget(tableContracteFurnizori);
 
         btnBackToDash_5 = new QPushButton(page_8);
         btnBackToDash_5->setObjectName("btnBackToDash_5");
@@ -1367,7 +1480,10 @@ public:
         verticalLayout_11->setObjectName("verticalLayout_11");
         qLabel = new QLabel(pageCreareAngajat);
         qLabel->setObjectName("qLabel");
-        qLabel->setFont(font6);
+        QFont font7;
+        font7.setFamilies({QString::fromUtf8("Segoe UI")});
+        font7.setBold(true);
+        qLabel->setFont(font7);
 
         verticalLayout_11->addWidget(qLabel);
 
@@ -1443,7 +1559,7 @@ public:
         vLayoutRapoarte->setContentsMargins(25, 20, 25, 20);
         labelTitluRapoarte = new QLabel(pageRapoarte);
         labelTitluRapoarte->setObjectName("labelTitluRapoarte");
-        labelTitluRapoarte->setFont(font7);
+        labelTitluRapoarte->setFont(font6);
 
         vLayoutRapoarte->addWidget(labelTitluRapoarte);
 
@@ -1458,7 +1574,7 @@ public:
         vLayoutStanga->setContentsMargins(0, 0, 0, 0);
         labelAngajatiR = new QLabel(widgetStanga);
         labelAngajatiR->setObjectName("labelAngajatiR");
-        labelAngajatiR->setFont(font6);
+        labelAngajatiR->setFont(font7);
 
         vLayoutStanga->addWidget(labelAngajatiR);
 
@@ -1476,21 +1592,21 @@ public:
         vLayoutDreapta->setContentsMargins(0, 0, 0, 0);
         labelRapoarteAngajat = new QLabel(widgetDreapta);
         labelRapoarteAngajat->setObjectName("labelRapoarteAngajat");
-        labelRapoarteAngajat->setFont(font6);
+        labelRapoarteAngajat->setFont(font7);
 
         vLayoutDreapta->addWidget(labelRapoarteAngajat);
 
         tableRapoarte = new QTableWidget(widgetDreapta);
         if (tableRapoarte->columnCount() < 4)
             tableRapoarte->setColumnCount(4);
-        QTableWidgetItem *__qtablewidgetitem34 = new QTableWidgetItem();
-        tableRapoarte->setHorizontalHeaderItem(0, __qtablewidgetitem34);
-        QTableWidgetItem *__qtablewidgetitem35 = new QTableWidgetItem();
-        tableRapoarte->setHorizontalHeaderItem(1, __qtablewidgetitem35);
-        QTableWidgetItem *__qtablewidgetitem36 = new QTableWidgetItem();
-        tableRapoarte->setHorizontalHeaderItem(2, __qtablewidgetitem36);
-        QTableWidgetItem *__qtablewidgetitem37 = new QTableWidgetItem();
-        tableRapoarte->setHorizontalHeaderItem(3, __qtablewidgetitem37);
+        QTableWidgetItem *__qtablewidgetitem43 = new QTableWidgetItem();
+        tableRapoarte->setHorizontalHeaderItem(0, __qtablewidgetitem43);
+        QTableWidgetItem *__qtablewidgetitem44 = new QTableWidgetItem();
+        tableRapoarte->setHorizontalHeaderItem(1, __qtablewidgetitem44);
+        QTableWidgetItem *__qtablewidgetitem45 = new QTableWidgetItem();
+        tableRapoarte->setHorizontalHeaderItem(2, __qtablewidgetitem45);
+        QTableWidgetItem *__qtablewidgetitem46 = new QTableWidgetItem();
+        tableRapoarte->setHorizontalHeaderItem(3, __qtablewidgetitem46);
         tableRapoarte->setObjectName("tableRapoarte");
         tableRapoarte->horizontalHeader()->setStretchLastSection(true);
 
@@ -1520,7 +1636,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(5);
+        stackedWidget->setCurrentIndex(0);
         tabWidget->setCurrentIndex(1);
 
 
@@ -1608,48 +1724,65 @@ public:
         btnBackToDash->setText(QCoreApplication::translate("MainWindow", "Go Back", nullptr));
         labelTitluEvenimente->setText(QCoreApplication::translate("MainWindow", "\342\255\220 ORGANIZARE EVENIMENTE ", nullptr));
         inputNumeEveniment->setPlaceholderText(QCoreApplication::translate("MainWindow", "Nume Eveniment...", nullptr));
-        dateEveniment->setDisplayFormat(QCoreApplication::translate("MainWindow", "d/M/yyyy", nullptr));
+        lblDataEv->setText(QCoreApplication::translate("MainWindow", "Data:", nullptr));
+        dateEveniment->setDisplayFormat(QCoreApplication::translate("MainWindow", "dd/MM/yyyy", nullptr));
+        lblOraStart->setText(QCoreApplication::translate("MainWindow", "Ora start:", nullptr));
+        timeStartEveniment->setDisplayFormat(QCoreApplication::translate("MainWindow", "HH:mm", nullptr));
+        lblOraSfarsit->setText(QCoreApplication::translate("MainWindow", "Ora sfarsit:", nullptr));
+        timeSfarsitEveniment->setDisplayFormat(QCoreApplication::translate("MainWindow", "HH:mm", nullptr));
+        lblLocatie->setText(QCoreApplication::translate("MainWindow", "Zona:", nullptr));
+        lblFirmaEv->setText(QCoreApplication::translate("MainWindow", "Firma organizatoare:", nullptr));
+        comboFirmaOrganizator->setItemText(0, QCoreApplication::translate("MainWindow", "(Selecteaza firma...)", nullptr));
+
         QTableWidgetItem *___qtablewidgetitem13 = tableEvenimenteAdmin->horizontalHeaderItem(0);
-        ___qtablewidgetitem13->setText(QCoreApplication::translate("MainWindow", "Nume Eveniment", nullptr));
+        ___qtablewidgetitem13->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
         QTableWidgetItem *___qtablewidgetitem14 = tableEvenimenteAdmin->horizontalHeaderItem(1);
-        ___qtablewidgetitem14->setText(QCoreApplication::translate("MainWindow", "Data", nullptr));
+        ___qtablewidgetitem14->setText(QCoreApplication::translate("MainWindow", "Nume Eveniment", nullptr));
         QTableWidgetItem *___qtablewidgetitem15 = tableEvenimenteAdmin->horizontalHeaderItem(2);
-        ___qtablewidgetitem15->setText(QCoreApplication::translate("MainWindow", "Locatie", nullptr));
+        ___qtablewidgetitem15->setText(QCoreApplication::translate("MainWindow", "Data", nullptr));
         QTableWidgetItem *___qtablewidgetitem16 = tableEvenimenteAdmin->horizontalHeaderItem(3);
-        ___qtablewidgetitem16->setText(QCoreApplication::translate("MainWindow", "Status", nullptr));
-        btnAprobaEveniment->setText(QCoreApplication::translate("MainWindow", " Programeaz\304\203 Eveniment\360\237\223\205", nullptr));
+        ___qtablewidgetitem16->setText(QCoreApplication::translate("MainWindow", "Ora Start", nullptr));
+        QTableWidgetItem *___qtablewidgetitem17 = tableEvenimenteAdmin->horizontalHeaderItem(4);
+        ___qtablewidgetitem17->setText(QCoreApplication::translate("MainWindow", "Ora Sfarsit", nullptr));
+        QTableWidgetItem *___qtablewidgetitem18 = tableEvenimenteAdmin->horizontalHeaderItem(5);
+        ___qtablewidgetitem18->setText(QCoreApplication::translate("MainWindow", "Firma", nullptr));
+        QTableWidgetItem *___qtablewidgetitem19 = tableEvenimenteAdmin->horizontalHeaderItem(6);
+        ___qtablewidgetitem19->setText(QCoreApplication::translate("MainWindow", "Status", nullptr));
+        btnAprobaEveniment->setText(QCoreApplication::translate("MainWindow", "Programeaz\304\203 Eveniment \360\237\223\205", nullptr));
+        btnVeziEvenimente->setText(QCoreApplication::translate("MainWindow", "Vezi Evenimente \360\237\223\213", nullptr));
+        btnIncheieEveniment->setText(QCoreApplication::translate("MainWindow", "Incheie Eveniment \342\234\223", nullptr));
         btnBackToDash_2->setText(QCoreApplication::translate("MainWindow", "Back to Menu", nullptr));
         label_31->setText(QCoreApplication::translate("MainWindow", "\342\232\240\357\270\217 SESIZ\304\202RI \310\230I RECLAMA\310\232II", nullptr));
-        QTableWidgetItem *___qtablewidgetitem17 = tableSesizariAdmin->horizontalHeaderItem(0);
-        ___qtablewidgetitem17->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
-        QTableWidgetItem *___qtablewidgetitem18 = tableSesizariAdmin->horizontalHeaderItem(1);
-        ___qtablewidgetitem18->setText(QCoreApplication::translate("MainWindow", "Sursa", nullptr));
-        QTableWidgetItem *___qtablewidgetitem19 = tableSesizariAdmin->horizontalHeaderItem(2);
-        ___qtablewidgetitem19->setText(QCoreApplication::translate("MainWindow", "Locatie", nullptr));
-        QTableWidgetItem *___qtablewidgetitem20 = tableSesizariAdmin->horizontalHeaderItem(3);
-        ___qtablewidgetitem20->setText(QCoreApplication::translate("MainWindow", "Descriere", nullptr));
+        QTableWidgetItem *___qtablewidgetitem20 = tableSesizariAdmin->horizontalHeaderItem(0);
+        ___qtablewidgetitem20->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
+        QTableWidgetItem *___qtablewidgetitem21 = tableSesizariAdmin->horizontalHeaderItem(1);
+        ___qtablewidgetitem21->setText(QCoreApplication::translate("MainWindow", "Sursa", nullptr));
+        QTableWidgetItem *___qtablewidgetitem22 = tableSesizariAdmin->horizontalHeaderItem(2);
+        ___qtablewidgetitem22->setText(QCoreApplication::translate("MainWindow", "Locatie", nullptr));
+        QTableWidgetItem *___qtablewidgetitem23 = tableSesizariAdmin->horizontalHeaderItem(3);
+        ___qtablewidgetitem23->setText(QCoreApplication::translate("MainWindow", "Descriere", nullptr));
         btnIgnoraSesizarea->setText(QCoreApplication::translate("MainWindow", "\342\235\214 Ignor\304\203", nullptr));
         btnConvertTask->setText(QCoreApplication::translate("MainWindow", "\360\237\224\247 Transform\304\203 \303\256n Task", nullptr));
         btnBackToDash_3->setText(QCoreApplication::translate("MainWindow", "Go Back", nullptr));
         label_33->setText(QCoreApplication::translate("MainWindow", "\360\237\223\204 ISTORIC \310\230I ARHIV\304\202 ACTIVIT\304\202\310\232I", nullptr));
-        QTableWidgetItem *___qtablewidgetitem21 = tableIstoric->horizontalHeaderItem(0);
-        ___qtablewidgetitem21->setText(QCoreApplication::translate("MainWindow", "Data", nullptr));
-        QTableWidgetItem *___qtablewidgetitem22 = tableIstoric->horizontalHeaderItem(1);
-        ___qtablewidgetitem22->setText(QCoreApplication::translate("MainWindow", "Tip", nullptr));
-        QTableWidgetItem *___qtablewidgetitem23 = tableIstoric->horizontalHeaderItem(2);
-        ___qtablewidgetitem23->setText(QCoreApplication::translate("MainWindow", "Descriere", nullptr));
-        QTableWidgetItem *___qtablewidgetitem24 = tableIstoric->horizontalHeaderItem(3);
-        ___qtablewidgetitem24->setText(QCoreApplication::translate("MainWindow", "Locatie", nullptr));
+        QTableWidgetItem *___qtablewidgetitem24 = tableIstoric->horizontalHeaderItem(0);
+        ___qtablewidgetitem24->setText(QCoreApplication::translate("MainWindow", "Data", nullptr));
+        QTableWidgetItem *___qtablewidgetitem25 = tableIstoric->horizontalHeaderItem(1);
+        ___qtablewidgetitem25->setText(QCoreApplication::translate("MainWindow", "Tip", nullptr));
+        QTableWidgetItem *___qtablewidgetitem26 = tableIstoric->horizontalHeaderItem(2);
+        ___qtablewidgetitem26->setText(QCoreApplication::translate("MainWindow", "Descriere", nullptr));
+        QTableWidgetItem *___qtablewidgetitem27 = tableIstoric->horizontalHeaderItem(3);
+        ___qtablewidgetitem27->setText(QCoreApplication::translate("MainWindow", "Locatie", nullptr));
         btnBackToDash_4->setText(QCoreApplication::translate("MainWindow", "Go Back", nullptr));
         label_32->setText(QCoreApplication::translate("MainWindow", "\360\237\223\246 GESTIUNE INVENTAR \310\230I MATERIALE", nullptr));
-        QTableWidgetItem *___qtablewidgetitem25 = tableInventar->horizontalHeaderItem(0);
-        ___qtablewidgetitem25->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
-        QTableWidgetItem *___qtablewidgetitem26 = tableInventar->horizontalHeaderItem(1);
-        ___qtablewidgetitem26->setText(QCoreApplication::translate("MainWindow", "Nume", nullptr));
-        QTableWidgetItem *___qtablewidgetitem27 = tableInventar->horizontalHeaderItem(2);
-        ___qtablewidgetitem27->setText(QCoreApplication::translate("MainWindow", "Cantitate", nullptr));
-        QTableWidgetItem *___qtablewidgetitem28 = tableInventar->horizontalHeaderItem(3);
-        ___qtablewidgetitem28->setText(QCoreApplication::translate("MainWindow", "Locatie", nullptr));
+        QTableWidgetItem *___qtablewidgetitem28 = tableInventar->horizontalHeaderItem(0);
+        ___qtablewidgetitem28->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
+        QTableWidgetItem *___qtablewidgetitem29 = tableInventar->horizontalHeaderItem(1);
+        ___qtablewidgetitem29->setText(QCoreApplication::translate("MainWindow", "Nume", nullptr));
+        QTableWidgetItem *___qtablewidgetitem30 = tableInventar->horizontalHeaderItem(2);
+        ___qtablewidgetitem30->setText(QCoreApplication::translate("MainWindow", "Cantitate", nullptr));
+        QTableWidgetItem *___qtablewidgetitem31 = tableInventar->horizontalHeaderItem(3);
+        ___qtablewidgetitem31->setText(QCoreApplication::translate("MainWindow", "Locatie", nullptr));
         lblCategorie->setText(QCoreApplication::translate("MainWindow", "Categorie:", nullptr));
         comboCategorieInventar->setItemText(0, QCoreApplication::translate("MainWindow", "(Selecteaza categorie...)", nullptr));
 
@@ -1663,16 +1796,29 @@ public:
         btnAddInventar->setText(QCoreApplication::translate("MainWindow", "\342\236\225 Adauga in Depozit", nullptr));
         btnUseInventar->setText(QCoreApplication::translate("MainWindow", "\360\237\227\221\357\270\217 Muta in Junk", nullptr));
         labelInventarAngajati->setText(QCoreApplication::translate("MainWindow", "Iteme alocate angajatilor:", nullptr));
-        QTableWidgetItem *___qtablewidgetitem29 = tableInventarAngajati->horizontalHeaderItem(0);
-        ___qtablewidgetitem29->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
-        QTableWidgetItem *___qtablewidgetitem30 = tableInventarAngajati->horizontalHeaderItem(1);
-        ___qtablewidgetitem30->setText(QCoreApplication::translate("MainWindow", "Angajat", nullptr));
-        QTableWidgetItem *___qtablewidgetitem31 = tableInventarAngajati->horizontalHeaderItem(2);
-        ___qtablewidgetitem31->setText(QCoreApplication::translate("MainWindow", "Item", nullptr));
-        QTableWidgetItem *___qtablewidgetitem32 = tableInventarAngajati->horizontalHeaderItem(3);
-        ___qtablewidgetitem32->setText(QCoreApplication::translate("MainWindow", "Task", nullptr));
-        QTableWidgetItem *___qtablewidgetitem33 = tableInventarAngajati->horizontalHeaderItem(4);
-        ___qtablewidgetitem33->setText(QCoreApplication::translate("MainWindow", "Stare", nullptr));
+        QTableWidgetItem *___qtablewidgetitem32 = tableInventarAngajati->horizontalHeaderItem(0);
+        ___qtablewidgetitem32->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
+        QTableWidgetItem *___qtablewidgetitem33 = tableInventarAngajati->horizontalHeaderItem(1);
+        ___qtablewidgetitem33->setText(QCoreApplication::translate("MainWindow", "Angajat", nullptr));
+        QTableWidgetItem *___qtablewidgetitem34 = tableInventarAngajati->horizontalHeaderItem(2);
+        ___qtablewidgetitem34->setText(QCoreApplication::translate("MainWindow", "Item", nullptr));
+        QTableWidgetItem *___qtablewidgetitem35 = tableInventarAngajati->horizontalHeaderItem(3);
+        ___qtablewidgetitem35->setText(QCoreApplication::translate("MainWindow", "Task", nullptr));
+        QTableWidgetItem *___qtablewidgetitem36 = tableInventarAngajati->horizontalHeaderItem(4);
+        ___qtablewidgetitem36->setText(QCoreApplication::translate("MainWindow", "Stare", nullptr));
+        labelContracteFurnizori->setText(QCoreApplication::translate("MainWindow", "Contracte Furnizori:", nullptr));
+        QTableWidgetItem *___qtablewidgetitem37 = tableContracteFurnizori->horizontalHeaderItem(0);
+        ___qtablewidgetitem37->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
+        QTableWidgetItem *___qtablewidgetitem38 = tableContracteFurnizori->horizontalHeaderItem(1);
+        ___qtablewidgetitem38->setText(QCoreApplication::translate("MainWindow", "Firma", nullptr));
+        QTableWidgetItem *___qtablewidgetitem39 = tableContracteFurnizori->horizontalHeaderItem(2);
+        ___qtablewidgetitem39->setText(QCoreApplication::translate("MainWindow", "Valoare (RON)", nullptr));
+        QTableWidgetItem *___qtablewidgetitem40 = tableContracteFurnizori->horizontalHeaderItem(3);
+        ___qtablewidgetitem40->setText(QCoreApplication::translate("MainWindow", "Data Semnare", nullptr));
+        QTableWidgetItem *___qtablewidgetitem41 = tableContracteFurnizori->horizontalHeaderItem(4);
+        ___qtablewidgetitem41->setText(QCoreApplication::translate("MainWindow", "Data Livrare", nullptr));
+        QTableWidgetItem *___qtablewidgetitem42 = tableContracteFurnizori->horizontalHeaderItem(5);
+        ___qtablewidgetitem42->setText(QCoreApplication::translate("MainWindow", "Nr. Obiecte", nullptr));
         btnBackToDash_5->setText(QCoreApplication::translate("MainWindow", "Go Back", nullptr));
         qLabel->setText(QCoreApplication::translate("MainWindow", "Creare Angajat Nou", nullptr));
         lineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Nume Angajat", nullptr));
@@ -1684,14 +1830,14 @@ public:
         labelTitluRapoarte->setText(QCoreApplication::translate("MainWindow", "RAPOARTE ANGAJATI", nullptr));
         labelAngajatiR->setText(QCoreApplication::translate("MainWindow", "Angajati", nullptr));
         labelRapoarteAngajat->setText(QCoreApplication::translate("MainWindow", "Selectati un angajat din stanga", nullptr));
-        QTableWidgetItem *___qtablewidgetitem34 = tableRapoarte->horizontalHeaderItem(0);
-        ___qtablewidgetitem34->setText(QCoreApplication::translate("MainWindow", "Task", nullptr));
-        QTableWidgetItem *___qtablewidgetitem35 = tableRapoarte->horizontalHeaderItem(1);
-        ___qtablewidgetitem35->setText(QCoreApplication::translate("MainWindow", "Data", nullptr));
-        QTableWidgetItem *___qtablewidgetitem36 = tableRapoarte->horizontalHeaderItem(2);
-        ___qtablewidgetitem36->setText(QCoreApplication::translate("MainWindow", "Tip", nullptr));
-        QTableWidgetItem *___qtablewidgetitem37 = tableRapoarte->horizontalHeaderItem(3);
-        ___qtablewidgetitem37->setText(QCoreApplication::translate("MainWindow", "Descriere", nullptr));
+        QTableWidgetItem *___qtablewidgetitem43 = tableRapoarte->horizontalHeaderItem(0);
+        ___qtablewidgetitem43->setText(QCoreApplication::translate("MainWindow", "Task", nullptr));
+        QTableWidgetItem *___qtablewidgetitem44 = tableRapoarte->horizontalHeaderItem(1);
+        ___qtablewidgetitem44->setText(QCoreApplication::translate("MainWindow", "Data", nullptr));
+        QTableWidgetItem *___qtablewidgetitem45 = tableRapoarte->horizontalHeaderItem(2);
+        ___qtablewidgetitem45->setText(QCoreApplication::translate("MainWindow", "Tip", nullptr));
+        QTableWidgetItem *___qtablewidgetitem46 = tableRapoarte->horizontalHeaderItem(3);
+        ___qtablewidgetitem46->setText(QCoreApplication::translate("MainWindow", "Descriere", nullptr));
         btnBackDinRapoarte->setText(QCoreApplication::translate("MainWindow", "Go Back", nullptr));
     } // retranslateUi
 

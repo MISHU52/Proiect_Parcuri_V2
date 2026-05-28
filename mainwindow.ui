@@ -83,7 +83,7 @@ QPushButton#btnLogoutAdmin, QPushButton#btnLogoutAngajat, QPushButton#btnBackGue
        </font>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -527,10 +527,7 @@ QPushButton#btnSendReport:hover, QPushButton#btnSendSesizareTeren:hover {
             <item>
              <widget class="QLabel" name="labelInventarMeu">
               <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <bold>true</bold>
-               </font>
+               <font><bold>true</bold></font>
               </property>
               <property name="text">
                <string>ITEME ALOCATE MIE</string>
@@ -542,26 +539,10 @@ QPushButton#btnSendReport:hover, QPushButton#btnSendSesizareTeren:hover {
               <attribute name="horizontalHeaderStretchLastSection">
                <bool>true</bool>
               </attribute>
-              <column>
-               <property name="text">
-                <string>ID</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Item</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Task</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Stare</string>
-               </property>
-              </column>
+              <column><property name="text"><string>ID</string></property></column>
+              <column><property name="text"><string>Item</string></property></column>
+              <column><property name="text"><string>Task</string></property></column>
+              <column><property name="text"><string>Stare</string></property></column>
              </widget>
             </item>
             <item>
@@ -985,7 +966,7 @@ QTableWidget#tableEvenimenteAdmin {
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_16">
            <property name="spacing">
-            <number>15</number>
+            <number>10</number>
            </property>
            <item>
             <widget class="QLineEdit" name="inputNumeEveniment">
@@ -995,17 +976,67 @@ QTableWidget#tableEvenimenteAdmin {
             </widget>
            </item>
            <item>
-            <widget class="QDateEdit" name="dateEveniment">
-             <property name="displayFormat">
-              <string>d/M/yyyy</string>
-             </property>
-             <property name="calendarPopup">
-              <bool>true</bool>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="hLayoutEv1">
+             <item>
+              <widget class="QLabel" name="lblDataEv">
+               <property name="text"><string>Data:</string></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDateEdit" name="dateEveniment">
+               <property name="displayFormat"><string>dd/MM/yyyy</string></property>
+               <property name="calendarPopup"><bool>true</bool></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="lblOraStart">
+               <property name="text"><string>Ora start:</string></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTimeEdit" name="timeStartEveniment">
+               <property name="displayFormat"><string>HH:mm</string></property>
+               <property name="time">
+                <time><hour>10</hour><minute>0</minute><second>0</second></time>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="lblOraSfarsit">
+               <property name="text"><string>Ora sfarsit:</string></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTimeEdit" name="timeSfarsitEveniment">
+               <property name="displayFormat"><string>HH:mm</string></property>
+               <property name="time">
+                <time><hour>22</hour><minute>0</minute><second>0</second></time>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
-            <widget class="QComboBox" name="comboLocatie"/>
+            <layout class="QHBoxLayout" name="hLayoutEv2">
+             <item>
+              <widget class="QLabel" name="lblLocatie">
+               <property name="text"><string>Zona:</string></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboLocatie"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="lblFirmaEv">
+               <property name="text"><string>Firma organizatoare:</string></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboFirmaOrganizator">
+               <item><property name="text"><string>(Selecteaza firma...)</string></property></item>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -1018,34 +1049,39 @@ QTableWidget#tableEvenimenteAdmin {
           <attribute name="horizontalHeaderStretchLastSection">
            <bool>true</bool>
           </attribute>
-          <column>
-           <property name="text">
-            <string>Nume Eveniment</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Data</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Locatie</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Status</string>
-           </property>
-          </column>
+          <column><property name="text"><string>ID</string></property></column>
+          <column><property name="text"><string>Nume Eveniment</string></property></column>
+          <column><property name="text"><string>Data</string></property></column>
+          <column><property name="text"><string>Ora Start</string></property></column>
+          <column><property name="text"><string>Ora Sfarsit</string></property></column>
+          <column><property name="text"><string>Firma</string></property></column>
+          <column><property name="text"><string>Status</string></property></column>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btnAprobaEveniment">
-          <property name="text">
-           <string> Programează Eveniment📅</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="hLayoutEvBtns">
+          <item>
+           <widget class="QPushButton" name="btnAprobaEveniment">
+            <property name="text">
+             <string>Programează Eveniment 📅</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnVeziEvenimente">
+            <property name="text">
+             <string>Vezi Evenimente 📋</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnIncheieEveniment">
+            <property name="text">
+             <string>Incheie Eveniment ✓</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QPushButton" name="btnBackToDash_2">
@@ -1345,34 +1381,22 @@ QPushButton#btnUseInventar {
             <layout class="QHBoxLayout" name="hLayoutInvRow1">
              <item>
               <widget class="QLabel" name="lblCategorie">
-               <property name="text">
-                <string>Categorie:</string>
-               </property>
+               <property name="text"><string>Categorie:</string></property>
               </widget>
              </item>
              <item>
               <widget class="QComboBox" name="comboCategorieInventar">
-               <item>
-                <property name="text">
-                 <string>(Selecteaza categorie...)</string>
-                </property>
-               </item>
+               <item><property name="text"><string>(Selecteaza categorie...)</string></property></item>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="lblFurnizor">
-               <property name="text">
-                <string>Furnizor:</string>
-               </property>
+               <property name="text"><string>Furnizor:</string></property>
               </widget>
              </item>
              <item>
               <widget class="QComboBox" name="comboFurnizorInventar">
-               <item>
-                <property name="text">
-                 <string>(Selecteaza furnizor...)</string>
-                </property>
-               </item>
+               <item><property name="text"><string>(Selecteaza furnizor...)</string></property></item>
               </widget>
              </item>
             </layout>
@@ -1381,62 +1405,38 @@ QPushButton#btnUseInventar {
             <layout class="QHBoxLayout" name="hLayoutInvRow2">
              <item>
               <widget class="QLabel" name="lblCantitate">
-               <property name="text">
-                <string>Cantitate:</string>
-               </property>
+               <property name="text"><string>Cantitate:</string></property>
               </widget>
              </item>
              <item>
               <widget class="QSpinBox" name="spinCantitate">
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>9999</number>
-               </property>
-               <property name="value">
-                <number>1</number>
-               </property>
+               <property name="minimum"><number>1</number></property>
+               <property name="maximum"><number>9999</number></property>
+               <property name="value"><number>1</number></property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="lblPret">
-               <property name="text">
-                <string>Pret (RON):</string>
-               </property>
+               <property name="text"><string>Pret (RON):</string></property>
               </widget>
              </item>
              <item>
               <widget class="QDoubleSpinBox" name="spinPretInventar">
-               <property name="decimals">
-                <number>2</number>
-               </property>
-               <property name="minimum">
-                <double>0.010000000000000</double>
-               </property>
-               <property name="maximum">
-                <double>999999.989999999990687</double>
-               </property>
-               <property name="value">
-                <double>100.000000000000000</double>
-               </property>
+               <property name="minimum"><double>0.01</double></property>
+               <property name="maximum"><double>999999.99</double></property>
+               <property name="value"><double>100.00</double></property>
+               <property name="decimals"><number>2</number></property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="lblDataAchizitie">
-               <property name="text">
-                <string>Data:</string>
-               </property>
+               <property name="text"><string>Data:</string></property>
               </widget>
              </item>
              <item>
               <widget class="QDateEdit" name="dateAchizitieInventar">
-               <property name="displayFormat">
-                <string>yyyy-MM-dd</string>
-               </property>
-               <property name="calendarPopup">
-                <bool>true</bool>
-               </property>
+               <property name="calendarPopup"><bool>true</bool></property>
+               <property name="displayFormat"><string>yyyy-MM-dd</string></property>
               </widget>
              </item>
             </layout>
@@ -1461,10 +1461,7 @@ QPushButton#btnUseInventar {
         <item>
          <widget class="QLabel" name="labelInventarAngajati">
           <property name="font">
-           <font>
-            <family>Segoe UI</family>
-            <bold>true</bold>
-           </font>
+           <font><bold>true</bold></font>
           </property>
           <property name="text">
            <string>Iteme alocate angajatilor:</string>
@@ -1476,31 +1473,35 @@ QPushButton#btnUseInventar {
           <attribute name="horizontalHeaderStretchLastSection">
            <bool>true</bool>
           </attribute>
-          <column>
-           <property name="text">
-            <string>ID</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Angajat</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Item</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Task</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Stare</string>
-           </property>
-          </column>
+          <column><property name="text"><string>ID</string></property></column>
+          <column><property name="text"><string>Angajat</string></property></column>
+          <column><property name="text"><string>Item</string></property></column>
+          <column><property name="text"><string>Task</string></property></column>
+          <column><property name="text"><string>Stare</string></property></column>
+         </widget>
+        </item>
+
+        <item>
+         <widget class="QLabel" name="labelContracteFurnizori">
+          <property name="font">
+           <font><bold>true</bold></font>
+          </property>
+          <property name="text">
+           <string>Contracte Furnizori:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableContracteFurnizori">
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <column><property name="text"><string>ID</string></property></column>
+          <column><property name="text"><string>Firma</string></property></column>
+          <column><property name="text"><string>Valoare (RON)</string></property></column>
+          <column><property name="text"><string>Data Semnare</string></property></column>
+          <column><property name="text"><string>Data Livrare</string></property></column>
+          <column><property name="text"><string>Nr. Obiecte</string></property></column>
          </widget>
         </item>
         <item>
