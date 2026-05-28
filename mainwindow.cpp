@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (ui->comboParcGuest){ ui->comboParcGuest->clear(); ui->comboParcGuest->addItems(parcuri);}
     if (ui->comboZonaGuest){ ui->comboZonaGuest->clear(); ui->comboZonaGuest->addItems(zone);  }
 
-    // Set today's date on inventory date picker
+    //Setare data azi
     if (auto* d = this->findChild<QDateEdit*>("dateAchizitieInventar"))
         d->setDate(QDate::currentDate());
 
@@ -58,27 +58,25 @@ MainWindow::MainWindow(QWidget *parent)
             connect(btn, &QPushButton::clicked, this, slot);
     };
 
-    // AUTH
+    //Autentificare
     connectBtn("btnLogin",         &MainWindow::loginSistem);
     connectBtn("btnLogoutAdmin",   &MainWindow::logoutSistem);
     connectBtn("btnLogoutAngajat", &MainWindow::logoutSistem);
     connectBtn("btnLogoutGuest",   &MainWindow::logoutSistem);
     connectBtn("btnJoinGuest",     [=](){ ui->stackedWidget->setCurrentIndex(3); });
 
-    // NAVIGARE ADMIN
+    //Admin-navigare
     connectBtn("btnGoTasks",    [=](){
         ui->stackedWidget->setCurrentIndex(4);
         incarcaAngajati();
         incarcaItemsInventar();
-        // CERINTA 4: reincarca taskurile din DB la fiecare navigare
-        // astfel raman consistente chiar dupa logout/login
         incarcaTaskuriAdmin();
     });
     connectBtn("btnGoEvents",   [=](){
         ui->stackedWidget->setCurrentIndex(5);
         incarcaFirmeOrganizatoare();
         incarcaEvenimente();
-        // Set today's date
+
         if (auto* d = this->findChild<QDateEdit*>("dateEveniment"))
             d->setDate(QDate::currentDate());
     });
@@ -104,7 +102,7 @@ MainWindow::MainWindow(QWidget *parent)
         incarcaAngajatiRapoarte();
     });
 
-    // BACK
+    //Buton-go back
     connectBtn("btnBackToDash",       [=](){ ui->stackedWidget->setCurrentIndex(1); });
     connectBtn("btnBackToDash_2",     [=](){ ui->stackedWidget->setCurrentIndex(1); });
     connectBtn("btnBackToDash_3",     [=](){ ui->stackedWidget->setCurrentIndex(1); });
@@ -113,17 +111,16 @@ MainWindow::MainWindow(QWidget *parent)
     connectBtn("btnBackDinCreare",    [=](){ ui->stackedWidget->setCurrentIndex(1); });
     connectBtn("btnBackDinRapoarte",  [=](){ ui->stackedWidget->setCurrentIndex(1); });
 
-    // ADMIN - TASKURI
+    //Admin-taskuri
     connectBtn("btnAdaugaTaskManual", &MainWindow::adaugaTaskComplex);
     connectBtn("btnConvertTask",      &MainWindow::convertSesizare);
 
-    // ASOCIERE ITEM LA TASK (cerinta 1+2: selectie din BD cu id)
+    //Item asociat la task
     connectBtn("btnAsociaItem", [=](){
         auto* combo    = this->findChild<QComboBox*>("comboItemInventar");
         auto* spinCant = this->findChild<QSpinBox*>("spinCantitateTask");
         if (!combo || !spinCant) return;
 
-        // Index 0 = "(Fara item)" - optional, nu blocheaza
         if (combo->currentIndex() == 0) {
             QMessageBox::information(this, "Info",
                 "Niciun item selectat. Task-ul ramane fara item asociat.");
@@ -171,7 +168,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
-    // ADMIN - SESIZARI
+    //Admin-sesizari
     connectBtn("btnIgnoraSesizarea", [=](){
         int row = ui->tableSesizariAdmin->currentRow();
         if (row == -1) { afiseazaEroare("Selectati o sesizare!"); return; }
@@ -187,7 +184,7 @@ MainWindow::MainWindow(QWidget *parent)
         } else afiseazaEroare(r["eroare"].toString());
     });
 
-    // ADMIN - EVENIMENTE
+    //Admin-evenimente
     connectBtn("btnAprobaEveniment", &MainWindow::gestioneazaEvenimente);
 
     connectBtn("btnIncheieEveniment", [=](){
@@ -209,15 +206,15 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
-    // ADMIN - INVENTAR (CERINTA 2+3)
+    //Admin-inventar
     connectBtn("btnAddInventar",    [=](){ gestionareInventar(true);  });
     connectBtn("btnUseInventar",    [=](){ gestionareInventar(false); });
 
 
-    // ADMIN - ANGAJATI
+    //Admin-angajat
     connectBtn("btnSalveazaAngajat", &MainWindow::creeazaAngajat);
 
-    // RAPOARTE - click pe angajat
+    //Rapoarte
     if (auto* listaR = this->findChild<QListWidget*>("listAngajatiRapoarte")) {
         connect(listaR, &QListWidget::currentRowChanged, this, [=](int) {
             if (auto* item = listaR->currentItem())
@@ -231,7 +228,7 @@ MainWindow::MainWindow(QWidget *parent)
     connectBtn("btnSendSesizareTeren",     [=](){ actiuniAngajat(4); });
     connectBtn("btnTrimiteSesizareaGuest", [=](){ actiuniAngajat(5); });
 
-    // CERINTA 9: Timer pentru actualizare automata istoric la admin
+    //Timer istoric
     m_timerIstoric = new QTimer(this);
     m_timerIstoric->setInterval(30000); // 30 secunde
     connect(m_timerIstoric, &QTimer::timeout, this, [=](){
@@ -243,7 +240,6 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() {
-    // CERINTA 7: Garanteaza logout in logger chiar daca serverul e oprit
     if (m_idUserCurent > 0) {
         if (m_socket->state() != QAbstractSocket::ConnectedState) {
             m_socket->connectToHost(SERVER_IP, SERVER_PORT);
@@ -260,11 +256,9 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-// ============================================================
 // RETEA
-// ============================================================
+
 QJsonObject MainWindow::trimiteCerere(const QJsonObject& cerere) {
-    // CERINTA 7: Reconecteaza inainte de fiecare cerere
     if (m_socket->state() != QAbstractSocket::ConnectedState) {
         m_socket->connectToHost(SERVER_IP, SERVER_PORT);
         if (!m_socket->waitForConnected(2000))
@@ -301,9 +295,8 @@ void MainWindow::afiseazaEroare(const QString& mesaj) {
     QMessageBox::warning(this, "Eroare", mesaj);
 }
 
-// ============================================================
-// AUTH
-// ============================================================
+//AUTH
+
 void MainWindow::loginSistem() {
     QString user        = ui->userInput->text().trimmed();
     QString parola      = ui->passInput->text().trimmed();
@@ -352,7 +345,7 @@ void MainWindow::loginSistem() {
 }
 
 void MainWindow::logoutSistem() {
-    // CERINTA 7: Trimite logout si asteapta confirmare
+    //asteapta confirmare de la server
     if (m_socket->state() != QAbstractSocket::ConnectedState) {
         m_socket->connectToHost(SERVER_IP, SERVER_PORT);
         m_socket->waitForConnected(2000);
@@ -367,9 +360,8 @@ void MainWindow::logoutSistem() {
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-// ============================================================
-// INCARCARE DATE
-// ============================================================
+//Incarca date
+
 void MainWindow::incarcaTaskuriAngajat() {
     if (m_idUserCurent <= 0) return;
     QJsonObject raspuns = trimiteCerere({{"actiune", "get_taskuri_mele"}});
@@ -386,7 +378,6 @@ void MainWindow::incarcaTaskuriAngajat() {
         QString desc = t["descriere"].toString();
         QString stat = t["status"].toString();
 
-        // CERINTA 6: retine primul task activ
         if (m_idTaskCurentAngajat == -1 && stat == "InProgress")
             m_idTaskCurentAngajat = id;
 
@@ -468,7 +459,7 @@ void MainWindow::incarcaAngajatiTabel() {
 }
 
 void MainWindow::incarcaInventar(int) {
-    // Afiseaza toate obiectele din depozit
+    //Afiseaza obiectele din depozit
     QJsonObject raspuns = trimiteCerere({{"actiune", "get_inventar_depozit_complet"}});
     if (!raspuns["succes"].toBool()) return;
     ui->tableInventar->setRowCount(0);
@@ -483,7 +474,7 @@ void MainWindow::incarcaInventar(int) {
     }
 }
 
-// CERINTA 2+3: Incarca categorii si furnizori in combouri
+//categorii si furnizori in inventar
 void MainWindow::incarcaCategoriiInventar() {
     auto* combo = this->findChild<QComboBox*>("comboCategorieInventar");
     if (!combo) return;
@@ -529,7 +520,7 @@ void MainWindow::incarcaItemsInventar() {
     }
 }
 
-// CERINTA 9: Istoric admin cu refresh automat
+//refresh istoric inventar
 void MainWindow::incarcaInventarAngajati() {
     auto* tabel = this->findChild<QTableWidget*>("tableInventarAngajati");
     if (!tabel) return;
@@ -644,7 +635,6 @@ void MainWindow::incarcaIstoric() {
     }
 }
 
-// CERINTA 5+8: Istoric angajat cu ore lucrate
 void MainWindow::incarcaIstoricAngajat() {
     auto* tabel = this->findChild<QTableWidget*>("tableIstoricAngajat");
     if (!tabel) return;
@@ -660,15 +650,14 @@ void MainWindow::incarcaIstoricAngajat() {
         tabel->setItem(r, 0, new QTableWidgetItem(t["data"].toString()));
         tabel->setItem(r, 1, new QTableWidgetItem(t["descriere"].toString()));
         tabel->setItem(r, 2, new QTableWidgetItem(t["tip"].toString()));
-        // CERINTA 8: ore lucrate = diff intre data_creare si data_finalizare
+
         QString oreLucrate = t["oreLucrate"].toString();
         tabel->setItem(r, 3, new QTableWidgetItem(oreLucrate.isEmpty() ? "-" : oreLucrate));
     }
 }
 
-// ============================================================
-// CREARE ANGAJAT
-// ============================================================
+//Creare angajat nou
+
 void MainWindow::creeazaAngajat() {
     auto getField = [&](const QString& name) -> QString {
         if (auto* w = this->findChild<QLineEdit*>(name)) return w->text().trimmed();
@@ -719,11 +708,9 @@ void MainWindow::creeazaAngajat() {
 
 void MainWindow::reincarcaAngajati() { incarcaAngajatiTabel(); }
 
-// ============================================================
 // ADMIN - TASKURI
-// ============================================================
+
 void MainWindow::incarcaTaskuriAdmin() {
-    // CERINTA 4: Incarca taskurile active din DB - persista dupa logout
     QJsonObject raspuns = trimiteCerere({{"actiune", "get_taskuri_active_admin"}});
     if (!raspuns["succes"].toBool()) return;
 
@@ -797,9 +784,8 @@ void MainWindow::convertSesizare() {
         "Sesizarea #" + itemId->text() + " preluata.\nSelectati angajat si apasati 'Adauga Task'.");
 }
 
-// ============================================================
-// CERINTA 1: ADMIN - EVENIMENTE cu verificare suprapunere
-// ============================================================
+//suprarpunere evenimente
+
 void MainWindow::incarcaFirmeOrganizatoare() {
     auto* combo = this->findChild<QComboBox*>("comboFirmaOrganizator");
     if (!combo) return;
@@ -837,11 +823,11 @@ void MainWindow::incarcaEvenimente() {
         QString status = ev["status"].toString();
         auto* itemStatus = new QTableWidgetItem(status);
         if (status == "Incheiat")
-            itemStatus->setForeground(QColor(150, 150, 150));  // gri
+            itemStatus->setForeground(QColor(150, 150, 150));
         else if (status == "Activ")
-            itemStatus->setForeground(QColor(0, 160, 0));      // verde
+            itemStatus->setForeground(QColor(0, 160, 0));
         else
-            itemStatus->setForeground(QColor(30, 120, 220));   // albastru - Programat
+            itemStatus->setForeground(QColor(30, 120, 220));
         ui->tableEvenimenteAdmin->setItem(r, 6, itemStatus);
     }
 }
@@ -885,9 +871,7 @@ void MainWindow::gestioneazaEvenimente() {
     }
 }
 
-// ============================================================
-// CERINTE 2+3: ADMIN - INVENTAR cu categorii si furnizori
-// ============================================================
+
 void MainWindow::gestionareInventar(bool adauga) {
     if (adauga) {
         auto* comboCateg = this->findChild<QComboBox*>("comboCategorieInventar");
@@ -961,9 +945,8 @@ void MainWindow::gestionareInventar(bool adauga) {
     }
 }
 
-// ============================================================
-// ANGAJAT & GUEST
-// ============================================================
+//angajat actiuni
+
 void MainWindow::actiuniAngajat(int tip) {
     switch (tip) {
 
@@ -978,7 +961,7 @@ void MainWindow::actiuniAngajat(int tip) {
         int idTask = itemId->text().toInt();
         if (idTask <= 0) { afiseazaEroare("ID task invalid. Reincarca lista."); break; }
 
-        // CERINTA 1: Verifica statusul - nu permite finalizarea unui task deja Done
+
         int colStatus = tabelTask->columnCount() >= 5 ? 4 : 3;
         auto* itemStatus = tabelTask->item(r, colStatus);
         if (itemStatus) {
@@ -1006,11 +989,10 @@ void MainWindow::actiuniAngajat(int tip) {
         break;
     }
 
-    case 3: { // CERINTA 6: Auto-select task curent
-        // Nu mai cerem selectie - folosim m_idTaskCurentAngajat
+    case 3: {
+
         int idTask = m_idTaskCurentAngajat;
 
-        // Fallback: primul task din tabel
         if (idTask <= 0 && this->findChild<QTableWidget*>("tableTaskuriAngajat")->rowCount() > 0) {
             auto* it = this->findChild<QTableWidget*>("tableTaskuriAngajat")->item(0, 0);
             if (it) idTask = it->text().toInt();
@@ -1080,9 +1062,8 @@ void MainWindow::actiuniAngajat(int tip) {
     }
 }
 
-// ============================================================
-// RAPOARTE ANGAJATI
-// ============================================================
+//Rapoarte angajati
+
 void MainWindow::incarcaAngajatiRapoarte() {
     auto* lista = this->findChild<QListWidget*>("listAngajatiRapoarte");
     if (!lista) return;
