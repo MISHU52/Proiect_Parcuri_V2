@@ -139,7 +139,6 @@ public:
     QTableWidget *tableEvenimenteAdmin;
     QHBoxLayout *hLayoutEvBtns;
     QPushButton *btnAprobaEveniment;
-    QPushButton *btnVeziEvenimente;
     QPushButton *btnIncheieEveniment;
     QPushButton *btnBackToDash_2;
     QWidget *page_6;
@@ -1049,11 +1048,6 @@ public:
 
         hLayoutEvBtns->addWidget(btnAprobaEveniment);
 
-        btnVeziEvenimente = new QPushButton(page_5);
-        btnVeziEvenimente->setObjectName("btnVeziEvenimente");
-
-        hLayoutEvBtns->addWidget(btnVeziEvenimente);
-
         btnIncheieEveniment = new QPushButton(page_5);
         btnIncheieEveniment->setObjectName("btnIncheieEveniment");
 
@@ -1749,7 +1743,6 @@ public:
         QTableWidgetItem *___qtablewidgetitem19 = tableEvenimenteAdmin->horizontalHeaderItem(6);
         ___qtablewidgetitem19->setText(QCoreApplication::translate("MainWindow", "Status", nullptr));
         btnAprobaEveniment->setText(QCoreApplication::translate("MainWindow", "Programeaz\304\203 Eveniment \360\237\223\205", nullptr));
-        btnVeziEvenimente->setText(QCoreApplication::translate("MainWindow", "Vezi Evenimente \360\237\223\213", nullptr));
         btnIncheieEveniment->setText(QCoreApplication::translate("MainWindow", "Incheie Eveniment \342\234\223", nullptr));
         btnBackToDash_2->setText(QCoreApplication::translate("MainWindow", "Back to Menu", nullptr));
         label_31->setText(QCoreApplication::translate("MainWindow", "\342\232\240\357\270\217 SESIZ\304\202RI \310\230I RECLAMA\310\232II", nullptr));

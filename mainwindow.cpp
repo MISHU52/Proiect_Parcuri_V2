@@ -190,8 +190,6 @@ MainWindow::MainWindow(QWidget *parent)
     // ADMIN - EVENIMENTE
     connectBtn("btnAprobaEveniment", &MainWindow::gestioneazaEvenimente);
 
-    connectBtn("btnVeziEvenimente", [=](){ incarcaEvenimente(); });
-
     connectBtn("btnIncheieEveniment", [=](){
         int row = ui->tableEvenimenteAdmin->currentRow();
         if (row == -1) { afiseazaEroare("Selectati un eveniment din tabel!"); return; }
@@ -839,9 +837,11 @@ void MainWindow::incarcaEvenimente() {
         QString status = ev["status"].toString();
         auto* itemStatus = new QTableWidgetItem(status);
         if (status == "Incheiat")
-            itemStatus->setForeground(QColor(150, 150, 150));
+            itemStatus->setForeground(QColor(150, 150, 150));  // gri
+        else if (status == "Activ")
+            itemStatus->setForeground(QColor(0, 160, 0));      // verde
         else
-            itemStatus->setForeground(QColor(0, 150, 0));
+            itemStatus->setForeground(QColor(30, 120, 220));   // albastru - Programat
         ui->tableEvenimenteAdmin->setItem(r, 6, itemStatus);
     }
 }

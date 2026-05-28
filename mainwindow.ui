@@ -1068,13 +1068,6 @@ QTableWidget#tableEvenimenteAdmin {
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btnVeziEvenimente">
-            <property name="text">
-             <string>Vezi Evenimente 📋</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="btnIncheieEveniment">
             <property name="text">
              <string>Incheie Eveniment ✓</string>
