@@ -83,7 +83,7 @@ QPushButton#btnLogoutAdmin, QPushButton#btnLogoutAngajat, QPushButton#btnBackGue
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -444,37 +444,11 @@ QPushButton#btnSendReport:hover, QPushButton#btnSendSesizareTeren:hover {
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
-              <property name="spacing">
-               <number>15</number>
+             <widget class="QPushButton" name="btnFinishTask">
+              <property name="text">
+               <string>Finalizat ✅</string>
               </property>
-              <property name="leftMargin">
-               <number>20</number>
-              </property>
-              <property name="topMargin">
-               <number>20</number>
-              </property>
-              <property name="rightMargin">
-               <number>20</number>
-              </property>
-              <property name="bottomMargin">
-               <number>20</number>
-              </property>
-              <item>
-               <widget class="QPushButton" name="btnStartTask">
-                <property name="text">
-                 <string> Începe Lucrul🚀</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnFinishTask">
-                <property name="text">
-                 <string> Finalizat✅</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -541,6 +515,60 @@ QPushButton#btnSendReport:hover, QPushButton#btnSendSesizareTeren:hover {
                 </widget>
                </item>
               </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabInventarAngajat">
+           <attribute name="title">
+            <string>Inventarul Meu</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="vLayoutInventarAngajat">
+            <item>
+             <widget class="QLabel" name="labelInventarMeu">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>ITEME ALOCATE MIE</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTableWidget" name="tableInventarMeu">
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>ID</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Item</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Task</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Stare</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelInventarInfo">
+              <property name="text">
+               <string>Itemele se returneaza automat la finalizarea taskului.</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -817,49 +845,42 @@ QLabel#label_9 {
          <widget class="QListWidget" name="listAngajatiTask"/>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="vLayoutAsociere">
+         <layout class="QHBoxLayout" name="hLayoutAsociere">
           <item>
-           <layout class="QHBoxLayout" name="hLayoutAsociereRow">
+           <widget class="QLabel" name="labelItemTask">
+            <property name="text">
+             <string>Item inventar:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboItemInventar">
             <item>
-             <widget class="QLabel" name="labelItemTask">
-              <property name="text">
-               <string>Item inventar:</string>
-              </property>
-             </widget>
+             <property name="text">
+              <string>(Fara item)</string>
+             </property>
             </item>
-            <item>
-             <widget class="QComboBox" name="comboItemInventar">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <item>
-               <property name="text">
-                <string>(Selecteaza item...)</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="labelCantTask">
-              <property name="text">
-               <string>Cant:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="spinCantitateTask">
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>999</number>
-              </property>
-              <property name="value">
-               <number>1</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelCantTask">
+            <property name="text">
+             <string>Cant:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinCantitateTask">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>999</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="btnAsociaItem">
@@ -1321,37 +1342,165 @@ QPushButton#btnUseInventar {
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_19">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <layout class="QHBoxLayout" name="hLayoutInvRow1">
              <item>
-              <widget class="QLineEdit" name="inputNumeMaterial">
-               <property name="placeholderText">
-                <string>Nume material nou...</string>
+              <widget class="QLabel" name="lblCategorie">
+               <property name="text">
+                <string>Categorie:</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinCantitate"/>
+              <widget class="QComboBox" name="comboCategorieInventar">
+               <item>
+                <property name="text">
+                 <string>(Selecteaza categorie...)</string>
+                </property>
+               </item>
+              </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboParcMaterial"/>
+              <widget class="QLabel" name="lblFurnizor">
+               <property name="text">
+                <string>Furnizor:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboFurnizorInventar">
+               <item>
+                <property name="text">
+                 <string>(Selecteaza furnizor...)</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="hLayoutInvRow2">
+             <item>
+              <widget class="QLabel" name="lblCantitate">
+               <property name="text">
+                <string>Cantitate:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinCantitate">
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>9999</number>
+               </property>
+               <property name="value">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="lblPret">
+               <property name="text">
+                <string>Pret (RON):</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="spinPretInventar">
+               <property name="decimals">
+                <number>2</number>
+               </property>
+               <property name="minimum">
+                <double>0.010000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>999999.989999999990687</double>
+               </property>
+               <property name="value">
+                <double>100.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="lblDataAchizitie">
+               <property name="text">
+                <string>Data:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDateEdit" name="dateAchizitieInventar">
+               <property name="displayFormat">
+                <string>yyyy-MM-dd</string>
+               </property>
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
            <item>
             <widget class="QPushButton" name="btnAddInventar">
              <property name="text">
-              <string>➕ Adaugă în Stoc</string>
+              <string>➕ Adauga in Depozit</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btnUseInventar">
              <property name="text">
-              <string>➖ Scade din Stoc</string>
+              <string>🗑️ Muta in Junk</string>
              </property>
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelInventarAngajati">
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Iteme alocate angajatilor:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableInventarAngajati">
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Angajat</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Item</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Task</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Stare</string>
+           </property>
+          </column>
          </widget>
         </item>
         <item>

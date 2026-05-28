@@ -427,16 +427,18 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: \
  C:/Qt/6.11.0/mingw_64/include/QtCore/quuid.h \
  C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonArray \
  C:/Qt/6.11.0/mingw_64/include/QtCore/qjsonarray.h \
+ C:/Qt/6.11.0/mingw_64/include/QtCore/QTimer \
+ C:/Qt/6.11.0/mingw_64/include/QtCore/qtimer.h \
+ C:/Qt/6.11.0/mingw_64/include/QtCore/qbasictimer.h \
+ C:/Qt/6.11.0/mingw_64/include/QtCore/qabstracteventdispatcher.h \
+ C:/Qt/6.11.0/mingw_64/include/QtCore/qeventloop.h \
+ C:/Qt/6.11.0/mingw_64/include/QtCore/qdeadlinetimer.h \
  C:/Qt_work/Gestionare_parcuriV2/build/Desktop_Qt_6_11_0_MinGW_64_bit-Debug/Gestionare_parcuriV2_autogen/include/ui_mainwindow.h \
  C:/Qt/6.11.0/mingw_64/include/QtCore/QVariant \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QApplication \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qapplication.h \
  C:/Qt/6.11.0/mingw_64/include/QtCore/qcoreapplication.h \
  C:/Qt/6.11.0/mingw_64/include/QtCore/qcoreevent.h \
- C:/Qt/6.11.0/mingw_64/include/QtCore/qbasictimer.h \
- C:/Qt/6.11.0/mingw_64/include/QtCore/qabstracteventdispatcher.h \
- C:/Qt/6.11.0/mingw_64/include/QtCore/qeventloop.h \
- C:/Qt/6.11.0/mingw_64/include/QtCore/qdeadlinetimer.h \
  C:/Qt/6.11.0/mingw_64/include/QtCore/qnativeinterface.h \
  C:/Qt/6.11.0/mingw_64/include/QtCore/qcoreapplication_platform.h \
  C:/Qt/6.11.0/mingw_64/include/QtGui/qguiapplication.h \
@@ -447,6 +449,8 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDateEdit \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qdatetimeedit.h \
  C:/Qt/6.11.0/mingw_64/include/QtCore/qtimezone.h \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDoubleSpinBox \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/qspinbox.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QFrame \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QGroupBox \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qgroupbox.h \
@@ -476,7 +480,6 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qpushbutton.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractbutton.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSpinBox \
- C:/Qt/6.11.0/mingw_64/include/QtWidgets/qspinbox.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSplitter \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qsplitter.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QStackedWidget \
@@ -497,6 +500,11 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTableWidgetItem \
  C:/Qt/6.11.0/mingw_64/include/QtCore/QDate \
+ C:/Qt/6.11.0/mingw_64/include/QtCore/QTime \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QLineEdit \
  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox \
- C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSpinBox
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QSpinBox \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDoubleSpinBox \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTextEdit \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTimeEdit \
+ C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDateEdit

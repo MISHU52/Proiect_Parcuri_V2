@@ -4,6 +4,7 @@ C:/Qt_work/Gestionare_parcuriV2/mainwindow.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonArray
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonDocument
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonObject
+ mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/QTimer
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/q17memory.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/q20bit.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/q20functional.h
@@ -13,6 +14,7 @@ C:/Qt_work/Gestionare_parcuriV2/mainwindow.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/q20utility.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/q23type_traits.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/q23utility.h
+ mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qabstracteventdispatcher.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qabstractitemmodel.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qalgorithms.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qalloc.h
@@ -24,6 +26,7 @@ C:/Qt_work/Gestionare_parcuriV2/mainwindow.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qatomic.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qatomic_cxx11.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qbasicatomic.h
+ mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qbasictimer.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qbindingstorage.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qbytearray.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qbytearrayalgorithms.h
@@ -47,8 +50,10 @@ C:/Qt_work/Gestionare_parcuriV2/mainwindow.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qdarwinhelpers.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qdatastream.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qdatetime.h
+ mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qdeadlinetimer.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qdebug.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qendian.h
+ mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qeventloop.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qexceptionhandling.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qflags.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qfloat16.h
@@ -130,6 +135,7 @@ C:/Qt_work/Gestionare_parcuriV2/mainwindow.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qtenvironmentvariables.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qtextstream.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qtformat_impl.h
+ mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qtimer.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qtmetamacros.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qtnoop.h
  mdp:C:/Qt/6.11.0/mingw_64/include/QtCore/qtpreprocessorsupport.h

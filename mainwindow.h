@@ -7,6 +7,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,56 +22,49 @@ public:
     ~MainWindow();
 
 private slots:
-    // Auth
     void loginSistem();
     void logoutSistem();
-
-    // Admin - Taskuri
     void adaugaTaskComplex();
     void convertSesizare();
-
-    // Admin - Evenimente & Inventar
     void gestioneazaEvenimente();
     void gestionareInventar(bool adauga);
-
-    // Admin - Angajati
     void creeazaAngajat();
     void reincarcaAngajati();
-
-    // Angajat & Guest
     void actiuniAngajat(int tip);
-
-    // Socket
     void onDatePrimite();
     void onEroareConectare(QAbstractSocket::SocketError err);
 
 private:
     Ui::MainWindow *ui;
-
-    QTcpSocket* m_socket;
-    QString     m_bufferRaspuns;
+    QTcpSocket*     m_socket;
+    QTimer*         m_timerIstoric;
+    QString         m_bufferRaspuns;
 
     static const QString SERVER_IP;
     static const int     SERVER_PORT = 9000;
 
     QString m_rolCurent;
-    int     m_idUserCurent = -1;
+    int     m_idUserCurent        = -1;
+    int     m_idTaskCurentAngajat = -1; // cerinta 6
 
-    // Retea
     QJsonObject trimiteCerere(const QJsonObject& cerere);
 
-    // Incarcare date
     void incarcaTaskuriAngajat();
     void incarcaSesizari();
-    void incarcaAngajati();        // pentru QListWidget (selectie task)
-    void incarcaAngajatiTabel();   // pentru QTableWidget (gestionare angajati)
+    void incarcaAngajati();
+    void incarcaAngajatiTabel();
     void incarcaInventar(int idZona = 1);
+    void incarcaCategoriiInventar();
+    void incarcaFurnizori();
     void incarcaItemsInventar();
     void incarcaIstoric();
+    void incarcaInventarAngajati();
+    void incarcaInventarMeu();
+    void incarcaTaskuriAdmin();
+    void incarcaIstoricAngajat();
     void incarcaAngajatiRapoarte();
     void incarcaRapoarteAngajat(int idAngajat);
 
-    // Helpers
     void conecteazaLaServer();
     void afiseazaEroare(const QString& mesaj);
 };

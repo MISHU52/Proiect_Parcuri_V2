@@ -5,6 +5,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/Gestionare_parcuriV2_autogen/mocs_compilatio
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonArray \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonDocument \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonObject \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/QTimer \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q17memory.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q20algorithm.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q20bit.h \
@@ -15,6 +16,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/Gestionare_parcuriV2_autogen/mocs_compilatio
   C:/Qt/6.11.0/mingw_64/include/QtCore/q20utility.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q23type_traits.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q23utility.h \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/qabstracteventdispatcher.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qabstractitemmodel.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qalgorithms.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qalloc.h \
@@ -26,6 +28,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/Gestionare_parcuriV2_autogen/mocs_compilatio
   C:/Qt/6.11.0/mingw_64/include/QtCore/qatomic.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qatomic_cxx11.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qbasicatomic.h \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/qbasictimer.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qbindingstorage.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qbytearray.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qbytearrayalgorithms.h \
@@ -49,8 +52,10 @@ CMakeFiles/Gestionare_parcuriV2.dir/Gestionare_parcuriV2_autogen/mocs_compilatio
   C:/Qt/6.11.0/mingw_64/include/QtCore/qdarwinhelpers.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qdatastream.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qdatetime.h \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/qdeadlinetimer.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qdebug.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qendian.h \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/qeventloop.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qexceptionhandling.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qflags.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qfloat16.h \
@@ -132,6 +137,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/Gestionare_parcuriV2_autogen/mocs_compilatio
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtenvironmentvariables.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtextstream.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtformat_impl.h \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/qtimer.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtmetamacros.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtmocconstants.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtmochelpers.h \
@@ -438,6 +444,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/main.cpp.obj: C:/Qt_work/Gestionare_parcuriV
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonArray \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonDocument \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonObject \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/QTimer \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q17memory.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q20bit.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q20functional.h \
@@ -572,6 +579,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/main.cpp.obj: C:/Qt_work/Gestionare_parcuriV
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtenvironmentvariables.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtextstream.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtformat_impl.h \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/qtimer.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtmetamacros.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtnoop.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtpreprocessorsupport.h \
@@ -881,6 +889,8 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: C:/Qt_work/Gestionare_pa
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonArray \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonDocument \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonObject \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/QTime \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/QTimer \
   C:/Qt/6.11.0/mingw_64/include/QtCore/QVariant \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q17memory.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/q20bit.h \
@@ -1016,6 +1026,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: C:/Qt_work/Gestionare_pa
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtenvironmentvariables.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtextstream.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtformat_impl.h \
+  C:/Qt/6.11.0/mingw_64/include/QtCore/qtimer.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtimezone.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtmetamacros.h \
   C:/Qt/6.11.0/mingw_64/include/QtCore/qtnoop.h \
@@ -1081,6 +1092,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: C:/Qt_work/Gestionare_pa
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QApplication \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDateEdit \
+  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDoubleSpinBox \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QFrame \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QGroupBox \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QHBoxLayout \
@@ -1101,6 +1113,7 @@ CMakeFiles/Gestionare_parcuriV2.dir/mainwindow.cpp.obj: C:/Qt_work/Gestionare_pa
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTableWidget \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTableWidgetItem \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTextEdit \
+  C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTimeEdit \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QVBoxLayout \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/QWidget \
   C:/Qt/6.11.0/mingw_64/include/QtWidgets/qabstractbutton.h \
@@ -1409,11 +1422,21 @@ C:/Qt/6.11.0/mingw_64/include/QtCore/qcontainerinfo.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/q20algorithm.h:
 
+C:/Qt/6.11.0/mingw_64/include/QtCore/QTimer:
+
 C:/Qt/6.11.0/mingw_64/include/QtCore/qatomic_cxx11.h:
 
 C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/modified_bessel_func.tcc:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonDocument:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/qfunctionaltools_impl.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonObject:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/qbasictimer.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/qtimer.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qtaggedpointer.h:
 
@@ -1434,12 +1457,6 @@ C:/Qt/6.11.0/mingw_64/include/QtCore/qalloc.h:
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/qlayoutitem.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/q20functional.h:
-
-C:/Qt/6.11.0/mingw_64/include/QtCore/qfunctionaltools_impl.h:
-
-C:/Qt/6.11.0/mingw_64/include/QtCore/qbasictimer.h:
-
-C:/Qt/6.11.0/mingw_64/include/QtCore/QJsonObject:
 
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDateEdit:
 
@@ -1475,6 +1492,8 @@ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/allo
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/q23utility.h:
 
+C:/Qt/6.11.0/mingw_64/include/QtCore/qabstracteventdispatcher.h:
+
 C:/Qt/6.11.0/mingw_64/include/QtCore/qtmochelpers.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qcontiguouscache.h:
@@ -1495,19 +1514,15 @@ C:/Qt/6.11.0/mingw_64/include/QtWidgets/qpushbutton.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qstringbuilder.h:
 
-C:/Qt/6.11.0/mingw_64/include/QtCore/qcompare_impl.h:
-
 C:/Qt/6.11.0/mingw_64/include/QtCore/qiodevice.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/qcompare_impl.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTableWidget:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qalgorithms.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qanystringview.h:
-
-C:/Qt/6.11.0/mingw_64/include/QtWidgets/qstatusbar.h:
-
-C:/Qt/6.11.0/mingw_64/include/QtCore/qhashfunctions.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qarraydata.h:
 
@@ -1535,7 +1550,15 @@ C:/Qt/6.11.0/mingw_64/include/QtWidgets/qmenu.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qbytearray.h:
 
+C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/corecrt_stdio_config.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/qprocessordetection.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/qdeadlinetimer.h:
+
 C:/Qt/6.11.0/mingw_64/include/QtCore/qcheckedint_impl.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/QTime:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qbytearrayalgorithms.h:
 
@@ -1575,6 +1598,12 @@ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/char
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qendian.h:
 
+C:/Qt/6.11.0/mingw_64/include/QtWidgets/qlayout.h:
+
+C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/uniform_int_dist.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/qeventloop.h:
+
 C:/Qt/6.11.0/mingw_64/include/QtGui/qpixelformat.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qflags.h:
@@ -1592,6 +1621,10 @@ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ctime:
 C:/Qt/6.11.0/mingw_64/include/QtCore/qrefcount.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qhash.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtWidgets/qstatusbar.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtCore/qhashfunctions.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qiodevicebase.h:
 
@@ -1618,6 +1651,8 @@ C:/Qt/6.11.0/mingw_64/include/QtCore/qjsonobject.h:
 C:/Qt/6.11.0/mingw_64/include/QtCore/qjsonparseerror.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qjsonvalue.h:
+
+C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTimeEdit:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qlatin1stringview.h:
 
@@ -1694,12 +1729,6 @@ C:/Qt/6.11.0/mingw_64/include/QtCore/qoverload.h:
 C:/Qt/6.11.0/mingw_64/include/QtCore/qpair.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qpoint.h:
-
-C:/Qt/6.11.0/mingw_64/include/QtCore/qdeadlinetimer.h:
-
-C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/corecrt_stdio_config.h:
-
-C:/Qt/6.11.0/mingw_64/include/QtCore/qprocessordetection.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtCore/qrect.h:
 
@@ -2143,12 +2172,6 @@ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stre
 
 C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/streambuf_iterator.h:
 
-C:/Qt/6.11.0/mingw_64/include/QtWidgets/qlayout.h:
-
-C:/Qt/6.11.0/mingw_64/include/QtCore/qeventloop.h:
-
-C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/uniform_int_dist.h:
-
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/QTableWidgetItem:
 
 C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/unique_ptr.h:
@@ -2337,8 +2360,6 @@ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h:
 
 C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h:
 
-C:/Qt/6.11.0/mingw_64/include/QtCore/qabstracteventdispatcher.h:
-
 C:/Qt/6.11.0/mingw_64/include/QtGui/qguiapplication_platform.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtGui/qinputmethod.h:
@@ -2348,6 +2369,8 @@ C:/Qt/6.11.0/mingw_64/include/QtCore/qtimezone.h:
 C:/Qt/6.11.0/mingw_64/include/QtGui/qtextdocument.h:
 
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/QComboBox:
+
+C:/Qt/6.11.0/mingw_64/include/QtWidgets/QDoubleSpinBox:
 
 C:/Qt/6.11.0/mingw_64/include/QtWidgets/QFrame:
 
